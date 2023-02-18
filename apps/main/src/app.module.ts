@@ -25,7 +25,7 @@ const entities: any[] = [User, Group]
       host: process.env.MYSQL_HOST,
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
-      logging: true,
+      logging: false,
       synchronize: true,
       namingStrategy: new SnakeNamingStrategy()
     }),
