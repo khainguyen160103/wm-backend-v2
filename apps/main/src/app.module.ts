@@ -9,6 +9,7 @@ const schemaName = 'mr_user'
 
 // import entities
 import { User } from './user/entities'
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { User } from './user/entities'
       logging: true,
       synchronize: true,
       namingStrategy: new SnakeNamingStrategy()
-    })
+    }),
+    GroupModule
   ],
   controllers: [AppController],
   providers: [AppService]
