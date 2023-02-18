@@ -7,20 +7,22 @@ import { AppService } from './app.service'
 
 const schemaName = 'mr_user'
 
+// import entities
+import { User } from './user/entities'
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forFeature(),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      database: process.env.MYSQL_DATABASE,
-      entities: ['dist/**/*.entity{.ts,.js}'], // get all entities
+      database: schemaName,
+      entities: [User], // get all entities
       host: process.env.MYSQL_HOST,
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
-      name: schemaName,
-      logging: false,
-      synchronize: false,
+      logging: true,
+      synchronize: true,
       namingStrategy: new SnakeNamingStrategy()
     })
   ],
