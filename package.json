@@ -14,7 +14,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/my-review-backend/main",
-    "docker:up": "docker-compose up adminer mysql -d",
+    "docker:up": "docker-compose up adminer db -d",
     "docker:down": "docker-compose down",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
