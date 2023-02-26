@@ -5,14 +5,14 @@ export class User {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @Column({name: 'name'})
+  @Column({ name: 'name' })
   name: string
 
-  @Column({name: 'password'})
+  @Column({ name: 'password' })
   password: string
 
   /** Check disabled user*/
-  @Column({name: 'is_disabled', type: 'boolean', default: 0})
+  @Column({ name: 'is_disabled', type: 'boolean', default: 0 })
   is_disabled?: boolean
 
   @CreateDateColumn()

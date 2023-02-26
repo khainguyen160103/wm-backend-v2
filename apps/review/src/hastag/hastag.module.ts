@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { HastagService } from './hastag.service';
-import { HastagController } from './hastag.controller';
+import { Module } from '@nestjs/common'
+import { HastagService } from './hastag.service'
+import { HastagController } from './hastag.controller'
 
 @Module({
   controllers: [HastagController],
-  providers: [HastagService]
+  providers: [HastagService],
 })
 export class HastagModule {}

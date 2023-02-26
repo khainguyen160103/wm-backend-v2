@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { GroupModule } from './group/group.module';
+import { GroupModule } from './group/group.module'
 
 const schemaName = 'mr_user'
 
@@ -27,11 +27,11 @@ const entities: any[] = [User, Group]
       password: process.env.MYSQL_PASSWORD,
       logging: false,
       synchronize: true,
-      namingStrategy: new SnakeNamingStrategy()
+      namingStrategy: new SnakeNamingStrategy(),
     }),
-    GroupModule
+    GroupModule,
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService],
 })
 export class AppModule {}
