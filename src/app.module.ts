@@ -11,8 +11,6 @@ import { Media } from './media/entities'
 import { Category } from './category/entities'
 import { Comment } from './comment/entities'
 
-const schemaName = 'mr_user'
-
 // import entities
 import { User } from './user/entities'
 import { Group } from './group/entities'
@@ -35,8 +33,9 @@ const entities: any[] = [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      database: schemaName,
-      entities, // get all entities
+      database: process.env.MYSQL_DATABASE,
+      // entities: ['src/**/*.entity{.ts,.js}'], // get all entities
+      entities,
       host: process.env.MYSQL_HOST,
       port: parseInt(process.env.MYSQL_PORT),
       username: process.env.MYSQL_USERNAME,

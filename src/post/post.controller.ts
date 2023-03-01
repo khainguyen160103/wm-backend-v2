@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common'
-import { Crud } from '@nestjsx/crud'
+import { Crud, CrudController } from '@nestjsx/crud'
 import { Post } from './entities'
 import { PostService } from './post.service'
 
@@ -9,6 +9,6 @@ import { PostService } from './post.service'
   },
 })
 @Controller('post')
-export class PostController {
-  constructor(private readonly postService: PostService) {}
+export class PostController implements CrudController<Post> {
+  constructor(public service: PostService) {}
 }
