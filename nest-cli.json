@@ -18,24 +18,6 @@
       "compilerOptions": {
         "tsConfigPath": "apps/main/tsconfig.app.json"
       }
-    },
-    "review": {
-      "type": "application",
-      "root": "apps/review",
-      "entryFile": "main",
-      "sourceRoot": "apps/review/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/review/tsconfig.app.json"
-      }
-    },
-    "admin": {
-      "type": "application",
-      "root": "apps/admin",
-      "entryFile": "main",
-      "sourceRoot": "apps/admin/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/admin/tsconfig.app.json"
-      }
     }
   }
 }

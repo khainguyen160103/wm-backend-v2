@@ -5,14 +5,30 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { GroupModule } from './group/group.module'
+import { Post, PostUserSave, PostUserStar } from './post/entities'
+import { Hastag } from './hastag/entities'
+import { Media } from './media/entities'
+import { Category } from './category/entities'
+import { Comment } from './comment/entities'
 
 const schemaName = 'mr_user'
 
 // import entities
 import { User } from './user/entities'
 import { Group } from './group/entities'
+import { PostModule } from './post/post.module'
 
-const entities: any[] = [User, Group]
+const entities: any[] = [
+  User,
+  Group, 
+  Hastag, 
+  Post, 
+  PostUserSave, 
+  PostUserStar, 
+  Media, 
+  Category, 
+  Comment
+]
 
 @Module({
   imports: [
@@ -30,6 +46,7 @@ const entities: any[] = [User, Group]
       namingStrategy: new SnakeNamingStrategy(),
     }),
     GroupModule,
+    PostModule
   ],
   controllers: [AppController],
   providers: [AppService],
