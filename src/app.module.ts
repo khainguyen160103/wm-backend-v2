@@ -4,25 +4,26 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+
 import { GroupModule } from './group/group.module'
-import { Post, PostUserSave, PostUserStar } from './post/entities'
-import { Hastag } from './hastag/entities'
-import { Media } from './media/entities'
-import { Category } from './category/entities'
-import { Comment } from './comment/entities'
+import { PostModule } from './post/post.module'
+
 
 // import entities
 import { User } from './user/entities'
 import { Group } from './group/entities'
-import { PostModule } from './post/post.module'
+import { Post, PostUser } from './post/entities'
+import { Hastag } from './hastag/entities'
+import { Media } from './media/entities'
+import { Category } from './category/entities'
+import { Comment } from './comment/entities'
 
 const entities: any[] = [
   User,
   Group, 
   Hastag, 
   Post, 
-  PostUserSave, 
-  PostUserStar, 
+  PostUser, 
   Media, 
   Category, 
   Comment
