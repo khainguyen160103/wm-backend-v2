@@ -1,12 +1,18 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import * as bcrypt from 'bcrypt'
+
+const SALT_ROUNDS = +process.env.SALT_ROUNDS || 16
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @Column({ name: 'name' })
-  name: string
+  @Column({ name: 'username' })
+  username: string
+
+  @Column({ name: 'email' })
+  email: string
 
   @Column({ name: 'password' })
   password: string
@@ -20,4 +26,15 @@ export class User {
 
   @UpdateDateColumn()
   updated_at?: Date | string
+
+  // hook for hashing password
+
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, SALT_ROUNDS)
+  }
+
+  async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password)
+  }
 }
