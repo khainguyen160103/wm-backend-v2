@@ -1,10 +1,20 @@
 import { Category } from 'src/category/entities'
 import { Hastag } from 'src/hastag/entities'
 import { Media } from 'src/media/entities'
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity()
-export class Post {
+export class Post extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
@@ -14,18 +24,18 @@ export class Post {
   @Column({ name: 'content', type: 'longtext' })
   content?: string
 
-  @Column({name: 'created_by_id'})
+  @Column({ name: 'created_by_id' })
   created_by_id?: number
 
   @ManyToOne(() => Category, (category) => category.posts)
   category: Category
 
   @ManyToMany(() => Media)
-  @JoinTable({name: 'post_medias'})
+  @JoinTable({ name: 'post_medias' })
   medias: Media[]
 
   @ManyToMany(() => Hastag)
-  @JoinTable({name: 'post_hastags'})
+  @JoinTable({ name: 'post_hastags' })
   hastags: Hastag[]
 
   @CreateDateColumn()

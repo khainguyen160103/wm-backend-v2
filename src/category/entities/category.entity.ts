@@ -1,8 +1,16 @@
 import { Post } from 'src/post/entities'
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity()
-export class Category {
+export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 

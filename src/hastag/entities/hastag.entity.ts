@@ -1,8 +1,8 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm'
 
 @Entity()
 @Unique('code', ['code'])
-export class Hastag {
+export class Hastag extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 

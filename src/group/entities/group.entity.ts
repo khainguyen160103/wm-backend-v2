@@ -1,9 +1,19 @@
 import { User } from 'src/user/entities'
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity()
 @Unique('code', ['code'])
-export class Group {
+export class Group extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
@@ -14,7 +24,7 @@ export class Group {
   code: string
 
   @ManyToMany(() => User)
-  @JoinTable({name: 'group_users'})
+  @JoinTable({ name: 'group_users' })
   users: User[]
 
   @CreateDateColumn()

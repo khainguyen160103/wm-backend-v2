@@ -1,8 +1,17 @@
 import { Media } from 'src/media/entities'
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity()
-export class Comment {
+export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: string
 
@@ -20,7 +29,7 @@ export class Comment {
   created_by_id: number
 
   @ManyToMany(() => Media)
-  @JoinTable({name: 'comment_medias'})
+  @JoinTable({ name: 'comment_medias' })
   medias: Media[]
 
   @CreateDateColumn()

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 export enum PostStar {
   ONE = 1,
@@ -9,7 +9,7 @@ export enum PostStar {
 }
 
 @Entity()
-export class PostUser {
+export class PostUser extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
@@ -22,7 +22,7 @@ export class PostUser {
   @Column({ name: 'star', type: 'enum', default: PostStar.FIVE, enum: Object.values(PostStar) })
   star: PostStar | number
 
-  @Column({name: 'is_save', type: 'boolean', default: false})
+  @Column({ name: 'is_save', type: 'boolean', default: false })
   is_save: boolean
 
   @CreateDateColumn()
