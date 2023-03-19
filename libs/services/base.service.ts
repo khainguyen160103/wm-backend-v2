@@ -10,7 +10,7 @@ export class BaseService<T extends BaseEntity> {
   }
 
   async getById(id: string): Promise<T> {
-    const result = await this.genericRepository.findOne(id)
+    const result = await this.genericRepository.findOne(id as any)
     if (!result) {
       throw new NotFoundException('Not found')
     }
