@@ -11,7 +11,7 @@ export class TasksController {
 
   @Get()
   getAllTasks(): Promise<Task[]> {
-    return this.tasksService.get()
+    return this.tasksService.get({})
   }
 
   @Get('/:id')

@@ -25,6 +25,9 @@ export class User extends BaseEntity {
   @Column({ name: 'password' })
   password: string
 
+  @Column({ name: 'refresh_token', nullable: true })
+  refresh_token?: string
+
   /** Check disabled user*/
   @Column({ name: 'is_disabled', type: 'boolean', default: 0 })
   is_disabled?: boolean
@@ -34,17 +37,4 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn()
   updated_at?: Date | string
-
-  // hook for hashing password
-
-  @BeforeInsert()
-  async hashPassword() {
-    console.log('hash password', this)
-
-    // this.password = await bcrypt.hash(this.password, SALT_ROUNDS)
-  }
-
-  // async validatePassword(password: string): Promise<boolean> {
-  //   // return bcrypt.compare(password, this.password)
-  // }
 }

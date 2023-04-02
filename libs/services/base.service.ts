@@ -5,12 +5,12 @@ import { BaseEntity, DeepPartial, Repository } from 'typeorm'
 export class BaseService<T extends BaseEntity> {
   constructor(private readonly genericRepository: Repository<T>) {}
 
-  async get(): Promise<T[]> {
-    return await this.genericRepository.find()
+  async get(query: any): Promise<T[]> {
+    return await this.genericRepository.find(query)
   }
 
-  async getById(id: string): Promise<T> {
-    const result = await this.genericRepository.findOne(id as any)
+  async getById(id: string | number): Promise<T> {
+    const result = await this.genericRepository.findOne(id)
     if (!result) {
       throw new NotFoundException('Not found')
     }
@@ -27,7 +27,7 @@ export class BaseService<T extends BaseEntity> {
     }
   }
 
-  async delete(id: string): Promise<{ message: string }> {
+  async delete(id: string | number): Promise<{ message: string }> {
     const result = await this.genericRepository.delete(id)
 
     if (result.affected === 0) {
@@ -36,7 +36,7 @@ export class BaseService<T extends BaseEntity> {
     return { message: 'success' }
   }
 
-  async update(id: string, model: DeepPartial<T>): Promise<T> {
+  async update(id: string | number, model: DeepPartial<T>): Promise<T> {
     try {
       const country: T = await this.getById(id)
       const updatedCountry = Object.assign(country, model)
