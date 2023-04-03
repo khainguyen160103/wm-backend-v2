@@ -90,9 +90,6 @@ export class AuthService {
       }),
     ])
 
-    console.log('at', at)
-    console.log('rt', rt)
-
     return {
       access_token: at,
       refresh_token: rt,
