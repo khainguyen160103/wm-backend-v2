@@ -16,6 +16,8 @@ export class AuthService {
   async signupLocal(dto: AuthDto): Promise<Tokens> {
     const hash = await bcrypt.hash(dto.password, SALT_ROUNDS)
 
+    console.log('user password', dto.password)
+    console.log('hash', hash)
     const user = await this.userService.create({ email: dto.email, password: hash, username: dto.email })
 
     const tokens = await this.getTokens(user.id, user.email)
@@ -25,27 +27,27 @@ export class AuthService {
   }
 
   async signinLocal(dto: AuthDto): Promise<Tokens> {
-    const user = await this.userService.get({})
+    const user = await this.userService.getOneByCondition({
+      email: dto.email,
+    })
 
     if (!user) throw new ForbiddenException('Access Denied')
 
-    const tokens = {
-      access_token: 'string',
-      refresh_token: 'string',
-    }
+    const passwordMatches = await bcrypt.compare(dto.password, user.password)
 
-    // const passwordMatches = await argon.verify(user.hash, dto.password)
-    // if (!passwordMatches) throw new ForbiddenException('Access Denied')
+    if (!passwordMatches) throw new ForbiddenException('Access Denied')
 
-    // const tokens = await this.getTokens(user.id, user.email)
-    // await this.updateRtHash(user.id, tokens.refresh_token)
+    const tokens = await this.getTokens(user.id, user.email)
+    await this.updateRtHash(user.id, tokens.refresh_token)
 
     return tokens
   }
 
-  // update hashed password to null
+  // update refresh token to null
   async logout(userId: number): Promise<boolean> {
-    await this.userService.update(userId, {})
+    await this.userService.update(userId, {
+      refresh_token: null,
+    })
     return true
   }
 
@@ -89,6 +91,9 @@ export class AuthService {
         expiresIn: '7d',
       }),
     ])
+
+    console.log('at', at)
+    console.log('rt', rt)
 
     return {
       access_token: at,

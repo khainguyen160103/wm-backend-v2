@@ -9,6 +9,10 @@ export class BaseService<T extends BaseEntity> {
     return await this.genericRepository.find(query)
   }
 
+  async getOneByCondition(query: any): Promise<T> {
+    return await this.genericRepository.findOne({ where: { ...query } })
+  }
+
   async getById(id: string | number): Promise<T> {
     const result = await this.genericRepository.findOne(id)
     if (!result) {

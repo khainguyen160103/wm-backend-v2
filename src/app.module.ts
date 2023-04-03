@@ -12,6 +12,7 @@ import { CommentModule } from './comment/comment.module'
 import { GroupModule } from './group/group.module'
 import { HastagModule } from './hastag/hastag.module'
 import { PostModule } from './post/post.module'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { PostModule } from './post/post.module'
     GroupModule,
     HastagModule,
     PostModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
