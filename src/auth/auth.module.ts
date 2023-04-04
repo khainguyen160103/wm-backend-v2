@@ -7,8 +7,9 @@ import { AuthService } from './auth.service'
 import { AtStrategy } from './strategies'
 
 @Module({
-  imports: [UserModule, JwtModule.register({}), ConfigModule],
+  imports: [JwtModule.register({ global: true }), ConfigModule, UserModule],
   controllers: [AuthController],
   providers: [AuthService, AtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}

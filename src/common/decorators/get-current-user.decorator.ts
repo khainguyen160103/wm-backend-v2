@@ -1,15 +1,11 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 import { JwtPayloadWithAt } from '../../auth/types'
 
+/** get currentUser only user in rt statergy*/
 export const GetCurrentUser = createParamDecorator(
-  (data: keyof JwtPayloadWithAt | undefined, context: ExecutionContext) => {
-    // const request = context.switchToHttp().getRequest()
-    // console.log('request', request.user)
-    // if (!data) return request.user
-    // return request.user[data]
-
-    console.log(data, context)
-
-    return 'currentUser'
+  async (data: keyof JwtPayloadWithAt | undefined, context: ExecutionContext) => {
+    const request = context.switchToHttp().getRequest()
+    if (!data) return request.user
+    return request.user[data]
   }
 )

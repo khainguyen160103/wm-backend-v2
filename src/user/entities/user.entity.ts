@@ -14,9 +14,6 @@ export class User extends BaseEntity {
   @Column({ name: 'password' })
   password?: string
 
-  @Column({ name: 'refresh_token', nullable: true })
-  refresh_token?: string
-
   /** Check disabled user*/
   @Column({ name: 'is_disabled', type: 'boolean', default: 0 })
   is_disabled?: boolean

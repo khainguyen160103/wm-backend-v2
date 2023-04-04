@@ -9,14 +9,12 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(config: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
       secretOrKey: config.get<string>('AT_SECRET'),
+      ignoreExpiration: false,
     })
   }
 
-  validate(req: Request, payload: JwtPayload) {
-    // const refreshToken = req?.get('authorization')?.replace('Bearer', '').trim()
-
+  validate(payload: JwtPayload) {
     return payload
   }
 }

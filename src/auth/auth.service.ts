@@ -41,9 +41,6 @@ export class AuthService {
 
   // update refresh token to null
   async logout(userId: number): Promise<boolean> {
-    await this.userService.update(userId, {
-      refresh_token: null,
-    })
     return true
   }
 
@@ -55,7 +52,7 @@ export class AuthService {
 
     const at = await this.jwtService.sign(jwtPayload, {
       secret: this.config.get<string>('AT_SECRET'),
-      expiresIn: '1h',
+      expiresIn: '7d',
     })
 
     return {
