@@ -10,9 +10,14 @@ export class UserService extends BaseService<User> {
   }
 
   async getById(id: string | number): Promise<User> {
-    const user = await this.repository.findOne(id)
-    if (user.password) delete user.password
+    try {
+      const user = await this.repository.findOne(id)
+      if (!user) return null
+      if (user.password) delete user.password
 
-    return user
+      return user
+    } catch (error) {
+      throw error
+    }
   }
 }

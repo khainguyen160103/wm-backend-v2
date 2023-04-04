@@ -28,17 +28,4 @@ export class AuthController {
   logout(@GetCurrentUserId() userId: number): Promise<boolean> {
     return this.authService.logout(userId)
   }
-
-  @Public()
-  @UseGuards(AtGuard)
-  @Post('refresh')
-  @HttpCode(HttpStatus.OK)
-  refreshTokens(
-    @GetCurrentUserId() userId: number,
-    @GetCurrentUser('refreshToken') refreshToken: string
-  ): Promise<any> {
-    console.log('refreshToken Controller')
-    return '232' as any
-    // return this.authService.refreshTokens(userId, refreshToken)
-  }
 }

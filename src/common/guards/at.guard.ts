@@ -7,7 +7,7 @@ import { Request } from 'express'
 import { UserService } from 'src/user/user.service'
 
 @Injectable()
-export class AtGuard extends AuthGuard('jwt'){
+export class AtGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector, private jwtService: JwtService, private userService: UserService) {
     super()
   }
