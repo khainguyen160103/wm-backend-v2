@@ -19,7 +19,6 @@ export class AuthService {
     const user = await this.userService.create({ email: dto.email, password: hash, username: dto.email })
 
     const tokens = await this.getTokens(user.id, user.email)
-    await this.updateRtHash(user.id, tokens.refresh_token)
 
     return tokens
   }
@@ -36,7 +35,6 @@ export class AuthService {
     if (!passwordMatches) throw new ForbiddenException('Access Denied')
 
     const tokens = await this.getTokens(user.id, user.email)
-    await this.updateRtHash(user.id, tokens.refresh_token)
 
     return tokens
   }
@@ -49,50 +47,19 @@ export class AuthService {
     return true
   }
 
-  // async refreshTokens(userId: number, rt: string): Promise<Tokens> {
-  //   const user = await this.prisma.user.findUnique({
-  //     where: {
-  //       id: userId,
-  //     },
-  //   })
-  //   if (!user || !user.hashedRt) throw new ForbiddenException('Access Denied')
-
-  //   const rtMatches = await argon.verify(user.hashedRt, rt)
-  //   if (!rtMatches) throw new ForbiddenException('Access Denied')
-
-  //   const tokens = await this.getTokens(user.id, user.email)
-  //   await this.updateRtHash(user.id, tokens.refresh_token)
-
-  //   return tokens
-  // }
-
-  async updateRtHash(userId: number, refresh_token: string): Promise<void> {
-    const hash = await bcrypt.hash(refresh_token, SALT_ROUNDS)
-    await this.userService.update(userId, {
-      refresh_token: hash,
-    })
-  }
-
   async getTokens(userId: number, email: string): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: userId,
       email: email,
     }
 
-    const [at, rt] = await Promise.all([
-      this.jwtService.signAsync(jwtPayload, {
-        secret: this.config.get<string>('AT_SECRET'),
-        expiresIn: '15m',
-      }),
-      this.jwtService.signAsync(jwtPayload, {
-        secret: this.config.get<string>('RT_SECRET'),
-        expiresIn: '7d',
-      }),
-    ])
+    const at = await this.jwtService.sign(jwtPayload, {
+      secret: this.config.get<string>('AT_SECRET'),
+      expiresIn: '1h',
+    })
 
     return {
       access_token: at,
-      refresh_token: rt,
     }
   }
 }
