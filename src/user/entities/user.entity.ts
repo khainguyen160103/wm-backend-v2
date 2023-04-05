@@ -1,15 +1,4 @@
-import {
-  BaseEntity,
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm'
-// import * as bcrypt from 'bcrypt'
-
-const SALT_ROUNDS = +process.env.SALT_ROUNDS || 16
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,10 +12,7 @@ export class User extends BaseEntity {
   email: string
 
   @Column({ name: 'password' })
-  password: string
-
-  @Column({ name: 'refresh_token', nullable: true })
-  refresh_token?: string
+  password?: string
 
   /** Check disabled user*/
   @Column({ name: 'is_disabled', type: 'boolean', default: 0 })

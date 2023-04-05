@@ -8,4 +8,11 @@ export class UserService extends BaseService<User> {
   constructor(public repository: UserRepository) {
     super(repository)
   }
+
+  async getById(id: string | number): Promise<User> {
+    const user = await this.repository.findOne(id)
+    if (user.password) delete user.password
+
+    return user
+  }
 }
