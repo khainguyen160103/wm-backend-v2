@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 // import Module
-import { TasksModule } from './tasks/tasks.module'
 import { UserModule } from './user/user.module'
 import { MediaModule } from './media/media.module'
 import { CategoryModule } from './category/category.module'
@@ -18,7 +17,6 @@ import { AuthModule } from './auth/auth.module'
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(configureDb()),
-    TasksModule,
     UserModule,
     MediaModule,
     CategoryModule,
