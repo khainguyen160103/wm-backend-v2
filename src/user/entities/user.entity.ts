@@ -5,8 +5,11 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
-  @Column({ name: 'username', nullable: true })
-  username?: string
+  @Column({ name: 'name', nullable: true })
+  name?: string
+
+  @Column({ name: 'avatar', nullable: true })
+  avatar?: string
 
   @Column({ name: 'email' })
   email: string
