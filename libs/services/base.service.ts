@@ -1,15 +1,16 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { BaseEntity, DeepPartial, Repository } from 'typeorm'
+import { cloneDeep } from 'lodash'
 
 @Injectable()
 export class BaseService<T extends BaseEntity> {
   constructor(private readonly genericRepository: Repository<T>) {}
 
-  async get(query: any): Promise<T[]> {
-    return await this.genericRepository.find(query)
+  async get(query?: any): Promise<T[]> {
+    return await this.genericRepository.find({ where: { ...query } })
   }
 
-  async getOneByCondition(query: any): Promise<T> {
+  async getOneByCondition(query?: any): Promise<T> {
     return await this.genericRepository.findOne({ where: { ...query } })
   }
 
@@ -42,6 +43,12 @@ export class BaseService<T extends BaseEntity> {
 
   async update(id: string | number, model: DeepPartial<T>): Promise<T> {
     try {
+      const user = cloneDeep(model) as any
+      if (user.userId) {
+        const exist = await (this.genericRepository as any).findOne({ where: { id } })
+        if (exist.created_by_id === user.userId) return new UnauthorizedException('Dont have permission') as any
+      }
+
       const country: T = await this.getById(id)
       const updatedCountry = Object.assign(country, model)
       return await this.genericRepository.save(updatedCountry)

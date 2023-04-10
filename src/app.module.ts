@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { configureDb } from '../config/typeorm.config'
 import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { APP_GUARD } from '@nestjs/core'
 
 // import Module
 import { TasksModule } from './tasks/tasks.module'
@@ -13,6 +14,7 @@ import { GroupModule } from './group/group.module'
 import { HastagModule } from './hastag/hastag.module'
 import { PostModule } from './post/post.module'
 import { AuthModule } from './auth/auth.module'
+import { AtGuard } from './common/guards'
 
 @Module({
   imports: [
@@ -29,6 +31,6 @@ import { AuthModule } from './auth/auth.module'
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [{ provide: APP_GUARD, useClass: AtGuard }],
 })
 export class AppModule {}

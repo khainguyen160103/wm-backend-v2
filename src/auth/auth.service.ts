@@ -16,7 +16,7 @@ export class AuthService {
   async signupLocal(dto: AuthDto): Promise<Tokens> {
     const hash = await bcrypt.hash(dto.password, SALT_ROUNDS)
 
-    const user = await this.userService.create({ email: dto.email, password: hash, username: dto.email })
+    const user = await this.userService.create({ email: dto.email, password: hash, name: dto.email })
 
     const tokens = await this.getTokens(user.id, user.email)
 
