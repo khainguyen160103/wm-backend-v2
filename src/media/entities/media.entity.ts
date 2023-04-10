@@ -9,7 +9,13 @@ export class Media extends BaseEntity {
   name: string
 
   @Column()
-  url: string
+  path: string
+
+  @Column({ nullable: true })
+  mimetype?: string
+
+  @Column()
+  type: string
 
   @Column()
   size?: number
