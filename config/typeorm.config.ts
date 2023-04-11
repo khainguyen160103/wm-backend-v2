@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 
 export const configureDb = () => {
   return <TypeOrmModuleOptions>{
@@ -8,6 +9,7 @@ export const configureDb = () => {
     username: process.env.MYSQL_USERNAME,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
+    namingStrategy: new SnakeNamingStrategy(),
     autoLoadEntities: true,
     logging: false,
     synchronize: true,

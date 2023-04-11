@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { APP_GUARD } from '@nestjs/core'
 
 // import Module
-import { TasksModule } from './tasks/tasks.module'
 import { UserModule } from './user/user.module'
 import { MediaModule } from './media/media.module'
 import { CategoryModule } from './category/category.module'
@@ -20,7 +19,6 @@ import { AtGuard } from './common/guards'
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(configureDb()),
-    TasksModule,
     UserModule,
     MediaModule,
     CategoryModule,

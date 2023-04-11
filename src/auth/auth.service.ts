@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ForbiddenException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
-import { AuthDto } from './dto'
+import { SignInDto, SignUpDto } from './dto'
 import * as bcrypt from 'bcrypt'
 import { UserService } from 'src/user/user.service'
 import { JwtPayload, Tokens } from './types'
@@ -13,18 +12,20 @@ const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 export class AuthService {
   constructor(private userService: UserService, private jwtService: JwtService, private config: ConfigService) {}
 
-  async signupLocal(dto: AuthDto): Promise<Tokens> {
-    const hash = await bcrypt.hash(dto.password, SALT_ROUNDS)
+  async signupLocal(dto: SignUpDto): Promise<Tokens> {
+    const { email, password, name } = dto
 
-    const user = await this.userService.create({ email: dto.email, password: hash, name: dto.email })
+    const hash = await bcrypt.hash(password, SALT_ROUNDS)
+
+    const user = await this.userService.create({ email, password: hash, name: email || name })
 
     const tokens = await this.getTokens(user.id, user.email)
 
     return tokens
   }
 
-  async signinLocal(dto: AuthDto): Promise<Tokens> {
-    const user = await this.userService.getOneByCondition({
+  async signinLocal(dto: SignInDto): Promise<Tokens> {
+    const user = await this.userService.getByEmail({
       email: dto.email,
     })
 

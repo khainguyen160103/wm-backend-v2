@@ -11,15 +11,15 @@ export class UserService extends BaseService<User> {
     super(repository)
   }
 
-  // async getById(id: string | number, options?: BaseServiceOptions): Promise<User> {
-  //   try {
-  //     const user = await this.repository.get(id)
-  //     if (!user) return null
-  //     // if (user.password) delete user.password
+  async getByEmail(params: { email: string }): Promise<User> {
+    try {
+      const { email } = params
 
-  //     return user
-  //   } catch (error) {
-  //     throw error
-  //   }
-  // }
+      const user = await this.repository.findOne({ where: { email } })
+
+      return user
+    } catch (error) {
+      throw error
+    }
+  }
 }

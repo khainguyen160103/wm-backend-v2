@@ -20,6 +20,8 @@ export class BaseService<T extends BaseEntity> {
   }
 
   async afterGet(result: T | T[]) {
+    if (!result) return result
+
     if (this.genericRepository.metadata.name === 'user' || 'User') delete (result as any).password
 
     return result
