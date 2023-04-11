@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { BaseService } from 'libs/services/base.service'
-import { BaseServiceOptions } from 'libs/services/types/options.types'
-import { BaseOptions } from 'vm'
 import { User } from './entities'
 import { UserRepository } from './repository/user.repository'
 

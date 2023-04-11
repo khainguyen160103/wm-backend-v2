@@ -7,7 +7,7 @@ import { BaseServiceOptions } from './types/options.types'
 export class BaseService<T extends BaseEntity> {
   constructor(private readonly genericRepository: Repository<T>) {}
 
-  async beforeGet(options?: BaseServiceOptions) {
+  async beforeGet(options?: BaseServiceOptions | undefined) {
     if (!options) {
       options = {}
     } else {
@@ -27,18 +27,21 @@ export class BaseService<T extends BaseEntity> {
     return result
   }
 
-  async getByCondition(query?: any, options?: BaseServiceOptions): Promise<T[]> {
-    if (options && Object.keys(options).length) this.beforeGet(options)
+  async getByCondition(query?: any, options: BaseServiceOptions = {}): Promise<T[]> {
+    if (Object.keys(options).length) this.beforeGet(options)
 
-    const result = await this.genericRepository.find({ where: { ...query }, ...(options as any) })
+    const result = await this.genericRepository.find({
+      where: { ...query },
+      ...(options as any),
+    })
 
     this.afterGet(result)
 
     return result
   }
 
-  async getOneByCondition(query?: any, options?: BaseServiceOptions): Promise<T> {
-    if (options && Object.keys(options).length) this.beforeGet(options)
+  async getOneByCondition(query?: any, options: BaseServiceOptions = {}): Promise<T> {
+    if (Object.keys(options).length) this.beforeGet(options)
 
     const result = await this.genericRepository.findOne({ where: { ...query }, ...(options as any) })
 
@@ -47,8 +50,8 @@ export class BaseService<T extends BaseEntity> {
     return result
   }
 
-  async getById(id: string | number, options?: BaseServiceOptions): Promise<T> {
-    if (options && Object.keys(options).length) this.beforeGet(options)
+  async getById(id: string | number, options: BaseServiceOptions = {}): Promise<T> {
+    if (Object.keys(options).length) this.beforeGet(options)
 
     const result = await this.genericRepository.findOne(id, options as any)
 
@@ -64,6 +67,7 @@ export class BaseService<T extends BaseEntity> {
   async create(model: DeepPartial<T>): Promise<T> {
     try {
       const country = await this.genericRepository.create(model)
+
       return country.save()
     } catch (error) {
       throw new BadRequestException(error)

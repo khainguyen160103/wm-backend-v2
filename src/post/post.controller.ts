@@ -18,7 +18,7 @@ export class PostController {
 
   @Get('/:id')
   async getById(@Param('id') id: string | number): Promise<PostEntity.Post> {
-    let result = await this.service.getById(id)
+    let result = await this.service.getById(id, { relations: ['medias', 'category', 'hastags'] })
 
     if (result) {
       result = await getCreatedBy(result, this.userService)
@@ -29,6 +29,7 @@ export class PostController {
   @Post()
   async create(@GetCurrentUserId() userId: number, @Body() post: CreatePostDto): Promise<PostEntity.Post> {
     let result = await this.service.create({ ...post, created_by_id: userId })
+    result = await this.getById(result.id)
 
     if (result) {
       result = await getCreatedBy(result, this.userService)
@@ -40,6 +41,7 @@ export class PostController {
   @Put()
   async update(@Body() post: UpdatePostDto): Promise<PostEntity.Post> {
     let result = await this.service.update(post.id, post)
+    result = await this.getById(result.id)
 
     if (result) {
       result = await getCreatedBy(result, this.userService)
