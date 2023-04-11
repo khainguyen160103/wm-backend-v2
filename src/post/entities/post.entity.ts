@@ -1,4 +1,5 @@
 import { Category } from 'src/category/entities'
+import { Comment } from 'src/comment/entities'
 import { Hastag } from 'src/hastag/entities'
 import { Media } from 'src/media/entities'
 import {
@@ -9,6 +10,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
@@ -37,6 +39,9 @@ export class Post extends BaseEntity {
   @ManyToMany(() => Hastag)
   @JoinTable({ name: 'post_hastags' })
   hastags: Hastag[]
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[]
 
   @CreateDateColumn()
   created_at?: Date | string
