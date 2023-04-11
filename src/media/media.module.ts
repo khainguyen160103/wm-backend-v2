@@ -4,7 +4,7 @@ import { MediaController } from './media.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MediaRepository } from './repository/media.repository'
 import { MulterModule } from '@nestjs/platform-express'
-import { imageFileFilter, setFileName } from 'src/utils/media'
+import { UserModule } from 'src/user/user.module'
 
 @Module({
   imports: [
@@ -12,6 +12,7 @@ import { imageFileFilter, setFileName } from 'src/utils/media'
     MulterModule.register({
       dest: 'uploads',
     }),
+    UserModule,
   ],
   controllers: [MediaController],
   providers: [MediaService],

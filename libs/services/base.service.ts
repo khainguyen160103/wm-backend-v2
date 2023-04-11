@@ -1,24 +1,60 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
-import { BaseEntity, DeepPartial, Repository } from 'typeorm'
+import { BaseEntity, DeepPartial, Repository, FindOneOptions } from 'typeorm'
 import { cloneDeep } from 'lodash'
+import { BaseServiceOptions } from './types/options.types'
 
 @Injectable()
 export class BaseService<T extends BaseEntity> {
   constructor(private readonly genericRepository: Repository<T>) {}
 
-  async get(query?: any): Promise<T[]> {
-    return await this.genericRepository.find({ where: { ...query } })
+  async beforeGet(options?: BaseServiceOptions) {
+    if (!options) {
+      options = {}
+    } else {
+      if (options.select) {
+        if (!options.select.length) delete options.select
+      }
+    }
+
+    return options
   }
 
-  async getOneByCondition(query?: any): Promise<T> {
-    return await this.genericRepository.findOne({ where: { ...query } })
+  async afterGet(result: T | T[]) {
+    if (this.genericRepository.metadata.name === 'user' || 'User') delete (result as any).password
+
+    return result
   }
 
-  async getById(id: string | number): Promise<T> {
-    const result = await this.genericRepository.findOne(id)
+  async getByCondition(query?: any, options?: BaseServiceOptions): Promise<T[]> {
+    if (options && Object.keys(options).length) this.beforeGet(options)
+
+    const result = await this.genericRepository.find({ where: { ...query }, ...(options as any) })
+
+    this.afterGet(result)
+
+    return result
+  }
+
+  async getOneByCondition(query?: any, options?: BaseServiceOptions): Promise<T> {
+    if (options && Object.keys(options).length) this.beforeGet(options)
+
+    const result = await this.genericRepository.findOne({ where: { ...query }, ...(options as any) })
+
+    this.afterGet(result)
+
+    return result
+  }
+
+  async getById(id: string | number, options?: BaseServiceOptions): Promise<T> {
+    if (options && Object.keys(options).length) this.beforeGet(options)
+
+    const result = await this.genericRepository.findOne(id, options as any)
+
     if (!result) {
       throw new NotFoundException('Not found')
     }
+
+    this.afterGet(result)
 
     return result
   }

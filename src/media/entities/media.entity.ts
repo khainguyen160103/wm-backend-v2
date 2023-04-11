@@ -1,3 +1,4 @@
+import { User } from 'src/user/entities'
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity()
@@ -22,6 +23,8 @@ export class Media extends BaseEntity {
 
   @Column()
   created_by_id: number
+
+  created_by?: User
 
   @CreateDateColumn()
   created_at: Date | string
