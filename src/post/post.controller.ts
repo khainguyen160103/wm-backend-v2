@@ -6,14 +6,24 @@ import { CreatePostDto } from './dto/create-post.dto'
 import { UpdatePostDto } from './dto/update-post.dto'
 import { getCreatedBy } from 'src/utils/user'
 import { UserService } from 'src/user/user.service'
+import { arrayToMap } from 'src/utils'
 
 @Controller('post')
 export class PostController {
   constructor(private service: PostService, private userService: UserService) {}
 
   @Get()
-  getAllPosts(query: PostEntity.Post): Promise<PostEntity.Post[]> {
-    return this.service.getByCondition(query)
+  async getAllPosts(query: PostEntity.Post): Promise<PostEntity.Post[]> {
+    const posts = await this.service.getByCondition(query)
+
+    const createdByIds = [...new Set(posts.map((post) => post.created_by_id))]
+    const users = await this.userService.getByIds({ ids: createdByIds })
+    const mapUser = arrayToMap(users, (user) => ({ key: user.id, value: user }))
+    posts.forEach((post) => {
+      if (mapUser[post.created_by_id]) post.created_by = mapUser[post.created_by_id]
+    })
+
+    return posts
   }
 
   @Get('/:id')

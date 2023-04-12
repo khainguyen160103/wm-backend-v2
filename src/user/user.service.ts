@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { BaseService } from 'libs/services/base.service'
+import { In } from 'typeorm'
 import { User } from './entities'
 import { UserRepository } from './repository/user.repository'
 
@@ -19,5 +20,13 @@ export class UserService extends BaseService<User> {
     } catch (error) {
       throw error
     }
+  }
+
+  async getByIds(params: { ids: number[] }): Promise<User[]> {
+    const { ids } = params
+
+    const users = await this.repository.find({ where: { id: In([...ids]) } })
+
+    return users
   }
 }

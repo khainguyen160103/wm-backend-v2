@@ -2,6 +2,7 @@ import { Category } from 'src/category/entities'
 import { Comment } from 'src/comment/entities'
 import { Hastag } from 'src/hastag/entities'
 import { Media } from 'src/media/entities'
+import { User } from 'src/user/entities'
 import {
   BaseEntity,
   Column,
@@ -28,6 +29,8 @@ export class Post extends BaseEntity {
 
   @Column({ name: 'created_by_id' })
   created_by_id?: number
+
+  created_by?: User
 
   @ManyToOne(() => Category, (category) => category.posts)
   category: Category
