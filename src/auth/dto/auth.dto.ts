@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer'
-import { IsEmail, IsNotEmpty, IsString, Max, Min } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString, Length, Max, Min } from 'class-validator'
 
 export class SignUpDto {
   @IsNotEmpty()
@@ -9,9 +9,7 @@ export class SignUpDto {
 
   @IsNotEmpty()
   @IsString()
-  // @Min(8)
-  // @Max(16)
-  // @Type(() => String)
+  @Length(8, 16)
   password: string
 
   @IsString()
@@ -26,7 +24,6 @@ export class SignInDto {
 
   @IsNotEmpty()
   @IsString()
-  // @Min(8)
-  // @Max(16)
+  @Length(8, 16)
   password: string
 }

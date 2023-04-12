@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Post, Body, Delete, Param } from '@nestjs/common'
+import { Controller, Get, Put, Post, Body, Delete, Param, HttpStatus, HttpCode } from '@nestjs/common'
 import { PostService } from './post.service'
 import * as PostEntity from './entities'
 import { GetCurrentUserId } from 'src/common/decorators'
@@ -13,6 +13,7 @@ export class PostController {
   constructor(private service: PostService, private userService: UserService) {}
 
   @Get()
+  @HttpCode(HttpStatus.OK)
   async getAllPosts(query: PostEntity.Post): Promise<PostEntity.Post[]> {
     const posts = await this.service.getByCondition(query)
 
@@ -27,8 +28,9 @@ export class PostController {
   }
 
   @Get('/:id')
+  @HttpCode(HttpStatus.OK)
   async getById(@Param('id') id: string | number): Promise<PostEntity.Post> {
-    let result = await this.service.getById(id, { relations: ['medias', 'category', 'hastags'] })
+    let result = await this.service.getById(id, { relations: ['medias', 'category', 'hastags', 'comments'] })
 
     if (result) {
       result = await getCreatedBy(result, this.userService)
@@ -37,6 +39,7 @@ export class PostController {
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   async create(@GetCurrentUserId() userId: number, @Body() post: CreatePostDto): Promise<PostEntity.Post> {
     let result = await this.service.create({ ...post, created_by_id: userId })
     result = await this.getById(result.id)
@@ -49,6 +52,7 @@ export class PostController {
   }
 
   @Put()
+  @HttpCode(HttpStatus.OK)
   async update(@Body() post: UpdatePostDto): Promise<PostEntity.Post> {
     let result = await this.service.update(post.id, post)
     result = await this.getById(result.id)
@@ -61,7 +65,8 @@ export class PostController {
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id') id: string | number): Promise<any> {
+  @HttpCode(HttpStatus.OK)
+  delete(@Param('id') id: string | number): Promise<any> {
     return this.service.delete(id)
   }
 }

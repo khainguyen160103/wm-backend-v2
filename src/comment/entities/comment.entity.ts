@@ -1,5 +1,6 @@
 import { Media } from 'src/media/entities'
 import { Post } from 'src/post/entities'
+import { User } from 'src/user/entities'
 import {
   BaseEntity,
   Column,
@@ -24,11 +25,13 @@ export class Comment extends BaseEntity {
   post_id: number
 
   /* id của commnent cha*/
-  @Column({ name: 'parent_id' })
+  @Column({ name: 'parent_id', nullable: true })
   parent_id?: number
 
   @Column({ name: 'created_by_id' })
   created_by_id: number
+
+  created_by?: User
 
   @ManyToMany(() => Media)
   @JoinTable({ name: 'comment_medias' })
@@ -38,8 +41,8 @@ export class Comment extends BaseEntity {
   post: Post
 
   @CreateDateColumn()
-  created_at: Date | string
+  created_at?: Date | string
 
   @UpdateDateColumn()
-  updated_at: Date | string
+  updated_at?: Date | string
 }
