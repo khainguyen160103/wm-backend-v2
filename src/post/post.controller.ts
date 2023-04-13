@@ -8,6 +8,7 @@ import { arrayToMap } from 'src/utils'
 import { SavePostDto, CreatePostDto, UpdatePostDto } from './dto'
 import { PostUserService } from './post_user.service'
 import { PostUser } from './entities'
+import { In } from 'typeorm'
 
 @Controller('post')
 export class PostController {
@@ -19,14 +20,27 @@ export class PostController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAllPosts(query: PostEntity.Post): Promise<PostEntity.Post[]> {
+  async getAllPosts(query: PostEntity.Post, @GetCurrentUserId() userId: number): Promise<PostEntity.Post[]> {
     const posts = await this.service.getByCondition(query)
 
     const createdByIds = [...new Set(posts.map((post) => post.created_by_id))]
-    const users = await this.userService.getByIds({ ids: createdByIds })
+    const postIds = posts.map((post) => post.id)
+    const [users, postUsers] = await Promise.all([
+      this.userService.getByIds({ ids: createdByIds }),
+      this.postUserService.getByCondition(
+        { post_id: In([...postIds]) },
+        { select: ['post_id', 'user_id', 'is_like', 'is_save'] }
+      ),
+    ])
+
     const mapUser = arrayToMap(users, (user) => ({ key: user.id, value: user }))
-    posts.forEach((post) => {
+
+    posts.forEach((post: any) => {
       if (mapUser[post.created_by_id]) post.created_by = mapUser[post.created_by_id]
+
+      const likeCounts = postUsers.filter((pu) => pu.post_id === post.id && pu.is_like)
+      post.like_count = likeCounts.length
+      post.post_user = postUsers.find((pu) => pu.user_id === userId)
     })
 
     return posts
