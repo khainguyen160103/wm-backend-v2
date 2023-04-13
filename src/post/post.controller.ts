@@ -2,15 +2,20 @@ import { Controller, Get, Put, Post, Body, Delete, Param, HttpStatus, HttpCode }
 import { PostService } from './post.service'
 import * as PostEntity from './entities'
 import { GetCurrentUserId } from 'src/common/decorators'
-import { CreatePostDto } from './dto/create-post.dto'
-import { UpdatePostDto } from './dto/update-post.dto'
 import { getCreatedBy } from 'src/utils/user'
 import { UserService } from 'src/user/user.service'
 import { arrayToMap } from 'src/utils'
+import { SavePostDto, CreatePostDto, UpdatePostDto } from './dto'
+import { PostUserService } from './post_user.service'
+import { PostUser } from './entities'
 
 @Controller('post')
 export class PostController {
-  constructor(private service: PostService, private userService: UserService) {}
+  constructor(
+    private service: PostService,
+    private userService: UserService,
+    private postUserService: PostUserService
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -68,5 +73,15 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   delete(@Param('id') id: string | number): Promise<any> {
     return this.service.delete(id)
+  }
+
+  @Post('save')
+  @HttpCode(HttpStatus.OK)
+  async save(@GetCurrentUserId() userId: number, @Body() params: SavePostDto): Promise<PostUser> {
+    const payload = {
+      user_id: userId,
+      post_id: params.post_id,
+    }
+    return this.service.save(payload)
   }
 }
