@@ -31,4 +31,20 @@ export class PostService extends BaseService<Post> {
 
     return await this.postUserRepository.findOne({ where: { user_id, post_id } })
   }
+
+  async like(params: { user_id: number; post_id: number }) {
+    const { user_id, post_id } = params
+    const postUser = await this.postUserRepository.findOne({ where: { user_id, post_id } })
+
+    if (postUser) {
+      const isLike = postUser.is_like
+
+      await this.postUserRepository.update(postUser.id, { is_like: !isLike })
+    } else {
+      const c = await this.postUserRepository.create({ user_id, post_id, is_like: true })
+      await c.save()
+    }
+
+    return await this.postUserRepository.findOne({ where: { user_id, post_id } })
+  }
 }

@@ -22,6 +22,9 @@ export class PostUser extends BaseEntity {
   @Column({ name: 'star', type: 'enum', default: PostStar.FIVE, enum: Object.values(PostStar) })
   star: PostStar | number
 
+  @Column({ name: 'is_like', type: 'boolean', default: false })
+  is_like: boolean
+
   @Column({ name: 'is_save', type: 'boolean', default: false })
   is_save: boolean
 

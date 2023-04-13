@@ -36,10 +36,18 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   async getById(@Param('id') id: string | number): Promise<PostEntity.Post> {
     let result = await this.service.getById(id, { relations: ['medias', 'category', 'hastags', 'comments'] })
-
+    let postUsers = []
     if (result) {
-      result = await getCreatedBy(result, this.userService)
+      ;[result, postUsers] = await Promise.all([
+        getCreatedBy(result, this.userService),
+        this.postUserService.getByCondition(
+          { post_id: result.id },
+          { select: ['id', 'post_id', 'user_id', 'is_like', 'is_save'] }
+        ),
+      ])
+      result.post_users = postUsers
     }
+
     return result
   }
 
@@ -48,9 +56,16 @@ export class PostController {
   async create(@GetCurrentUserId() userId: number, @Body() post: CreatePostDto): Promise<PostEntity.Post> {
     let result = await this.service.create({ ...post, created_by_id: userId })
     result = await this.getById(result.id)
-
+    let postUsers = []
     if (result) {
-      result = await getCreatedBy(result, this.userService)
+      ;[result, postUsers] = await Promise.all([
+        getCreatedBy(result, this.userService),
+        this.postUserService.getByCondition(
+          { post_id: result.id },
+          { select: ['id', 'post_id', 'user_id', 'is_like', 'is_save'] }
+        ),
+      ])
+      result.post_users = postUsers
     }
 
     return result
@@ -61,9 +76,16 @@ export class PostController {
   async update(@Body() post: UpdatePostDto): Promise<PostEntity.Post> {
     let result = await this.service.update(post.id, post)
     result = await this.getById(result.id)
-
+    let postUsers = []
     if (result) {
-      result = await getCreatedBy(result, this.userService)
+      ;[result, postUsers] = await Promise.all([
+        getCreatedBy(result, this.userService),
+        this.postUserService.getByCondition(
+          { post_id: result.id },
+          { select: ['id', 'post_id', 'user_id', 'is_like', 'is_save'] }
+        ),
+      ])
+      result.post_users = postUsers
     }
 
     return result
@@ -83,5 +105,15 @@ export class PostController {
       post_id: params.post_id,
     }
     return this.service.save(payload)
+  }
+
+  @Post('like')
+  @HttpCode(HttpStatus.OK)
+  async like(@GetCurrentUserId() userId: number, @Body() params: SavePostDto): Promise<PostUser> {
+    const payload = {
+      user_id: userId,
+      post_id: params.post_id,
+    }
+    return this.service.like(payload)
   }
 }

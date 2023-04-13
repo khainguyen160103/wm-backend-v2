@@ -15,6 +15,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { PostUser } from './post_user.entity'
 
 @Entity()
 export class Post extends BaseEntity {
@@ -45,6 +46,8 @@ export class Post extends BaseEntity {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[]
+
+  post_users?: PostUser[]
 
   @CreateDateColumn()
   created_at?: Date | string
