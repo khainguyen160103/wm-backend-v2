@@ -75,6 +75,7 @@ export class MediaController {
   }
 
   @Get(':imgpath')
+  @Pub
   @HttpCode(HttpStatus.OK)
   async getUploadFile(@Param('imgpath') path: string, @Res() response) {
     const media = await this.mediaService.getOneByCondition({ path: path.trim() })
