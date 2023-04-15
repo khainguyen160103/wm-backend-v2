@@ -14,7 +14,7 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express'
 import { MediaService } from './media.service'
 import { diskStorage } from 'multer'
 import { generateFilePath, imageFileFilter, setFileName } from 'src/utils/media'
-import { GetCurrentUserId } from 'src/common/decorators'
+import { GetCurrentUserId, Public } from 'src/common/decorators'
 import { UserService } from 'src/user/user.service'
 import { getCreatedBy } from 'src/utils/user'
 
@@ -75,7 +75,7 @@ export class MediaController {
   }
 
   @Get(':imgpath')
-  @Pub
+  @Public()
   @HttpCode(HttpStatus.OK)
   async getUploadFile(@Param('imgpath') path: string, @Res() response) {
     const media = await this.mediaService.getOneByCondition({ path: path.trim() })
