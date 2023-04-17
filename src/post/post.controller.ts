@@ -22,7 +22,7 @@ export class PostController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async getAllPosts(
-    params: { query: PostEntity.Post; options: BaseServiceOptions },
+    @Body() params: { query: PostEntity.Post; options: BaseServiceOptions },
     @GetCurrentUserId() userId: number
   ): Promise<PostEntity.Post[]> {
     const posts = await this.service.getByCondition(params?.query, params?.options)
