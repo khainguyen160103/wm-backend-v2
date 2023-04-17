@@ -9,6 +9,7 @@ import { SavePostDto, CreatePostDto, UpdatePostDto } from './dto'
 import { PostUserService } from './post_user.service'
 import { PostUser } from './entities'
 import { In } from 'typeorm'
+import { BaseServiceOptions } from 'libs/services/types/options.types'
 
 @Controller('post')
 export class PostController {
@@ -20,8 +21,11 @@ export class PostController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAllPosts(query: PostEntity.Post, @GetCurrentUserId() userId: number): Promise<PostEntity.Post[]> {
-    const posts = await this.service.getByCondition(query)
+  async getAllPosts(
+    params: { query: PostEntity.Post; options: BaseServiceOptions },
+    @GetCurrentUserId() userId: number
+  ): Promise<PostEntity.Post[]> {
+    const posts = await this.service.getByCondition(params?.query, params?.options)
 
     const createdByIds = [...new Set(posts.map((post) => post.created_by_id))]
     const postIds = posts.map((post) => post.id)
@@ -60,6 +64,20 @@ export class PostController {
         ),
       ])
       result.post_users = postUsers
+    }
+
+    if (result.comments) {
+      const userIds = result.comments.map((comment) => comment.created_by_id)
+
+      if (userIds.length) {
+        const users = await this.userService.getByIds({ ids: userIds })
+
+        const mapUser = arrayToMap(users, (user) => ({ key: user.id, value: user }))
+
+        result.comments.forEach((comment) => {
+          comment.created_by = mapUser[comment.created_by_id]
+        })
+      }
     }
 
     return result

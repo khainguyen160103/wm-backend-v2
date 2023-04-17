@@ -3,6 +3,7 @@ import { BaseService } from 'libs/services/base.service'
 import { In } from 'typeorm'
 import { User } from './entities'
 import { UserRepository } from './repository/user.repository'
+import { USER_SELECT_FIELDS } from 'src/constants/user.constants'
 
 @Injectable()
 export class UserService extends BaseService<User> {
@@ -25,7 +26,7 @@ export class UserService extends BaseService<User> {
   async getByIds(params: { ids: number[] }): Promise<User[]> {
     const { ids } = params
 
-    const users = await this.repository.find({ where: { id: In([...ids]) } })
+    const users = await this.repository.find({ where: { id: In([...ids]) }, select: USER_SELECT_FIELDS as any })
 
     return users
   }
