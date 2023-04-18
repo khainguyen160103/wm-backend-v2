@@ -19,7 +19,7 @@ export class PostController {
     private postUserService: PostUserService
   ) {}
 
-  @Get()
+  @Post('find')
   @HttpCode(HttpStatus.OK)
   async getAllPosts(
     @Body() params: { query: PostEntity.Post; options: BaseServiceOptions },

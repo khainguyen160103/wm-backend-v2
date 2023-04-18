@@ -12,7 +12,7 @@ import { BaseServiceOptions } from 'libs/services/types/options.types'
 export class CommentController {
   constructor(private readonly service: CommentService, private userService: UserService) {}
 
-  @Get()
+  @Post('find')
   @HttpCode(HttpStatus.OK)
   async getAllComments(@Body() params: { query: Comment; options: BaseServiceOptions }): Promise<Comment[]> {
     const comments = await this.service.getByCondition(params?.query, params?.options)
