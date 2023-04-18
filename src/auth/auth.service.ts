@@ -15,9 +15,15 @@ export class AuthService {
   async signupLocal(dto: SignUpDto): Promise<Tokens> {
     const { email, password, name } = dto
 
+    let user = await this.userService.getByEmail({
+      email,
+    })
+
+    if (user) throw new ForbiddenException('User already exist')
+
     const hash = await bcrypt.hash(password, SALT_ROUNDS)
 
-    const user = await this.userService.create({ email, password: hash, name: email || name })
+    user = await this.userService.create({ email, password: hash, name: email || name })
 
     const tokens = await this.getTokens(user.id, user.email)
 
