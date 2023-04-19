@@ -12,7 +12,6 @@ export class SignUpDto {
   @Length(8, 16)
   password: string
 
-  @IsString()
   name?: string
 }
 
