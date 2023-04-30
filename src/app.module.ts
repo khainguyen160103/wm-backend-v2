@@ -14,6 +14,8 @@ import { HastagModule } from './hastag/hastag.module'
 import { PostModule } from './post/post.module'
 import { AuthModule } from './auth/auth.module'
 import { AtGuard } from './common/guards'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { AtGuard } from './common/guards'
     PostModule,
     AuthModule,
   ],
-  controllers: [],
-  providers: [{ provide: APP_GUARD, useClass: AtGuard }],
+  controllers: [AppController],
+  providers: [{ provide: APP_GUARD, useClass: AtGuard }, AppService],
 })
 export class AppModule {}
