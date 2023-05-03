@@ -44,7 +44,7 @@ export class PostController {
 
       const likeCounts = postUsers.filter((pu) => pu.post_id === post.id && pu.is_like)
       post.like_count = likeCounts.length
-      post.post_user = postUsers.find((pu) => pu.user_id === userId)
+      post.post_user = postUsers.find((pu) => pu.user_id === userId && pu.post_id === post.id) || null
     })
 
     return posts
