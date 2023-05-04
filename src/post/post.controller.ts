@@ -25,18 +25,40 @@ export class PostController {
     @Body() params: { query: PostEntity.Post; options: BaseServiceOptions },
     @GetCurrentUserId() userId: number
   ): Promise<PostEntity.Post[]> {
+    const isHasQuerySave = params?.query?.post_user?.is_save
+    let postUsers
+    if (isHasQuerySave) {
+      postUsers = await this.postUserService.getByCondition(
+        { user_id: userId, is_save: true },
+        { select: ['post_id', 'user_id', 'is_like', 'is_save'] }
+      )
+
+      if (!postUsers.length) return
+      params.query.id = In([...new Set(postUsers.map((pu) => pu.post_id))]) as any
+      delete params.query.post_user.is_save
+      delete params.query.post_user
+    }
+
     const posts = await this.service.getByCondition(params?.query, params?.options)
 
     const createdByIds = [...new Set(posts.map((post) => post.created_by_id))]
     const postIds = posts.map((post) => post.id)
-    const [users, postUsers] = await Promise.all([
-      this.userService.getByIds({ ids: createdByIds }),
-      this.postUserService.getByCondition(
-        { post_id: In([...postIds]) },
-        { select: ['post_id', 'user_id', 'is_like', 'is_save'] }
-      ),
-    ])
 
+    let users = []
+    const tasks: any[] = []
+    tasks.push(() => this.userService.getByIds({ ids: createdByIds }))
+    if (!isHasQuerySave) {
+      tasks.push(() =>
+        this.postUserService.getByCondition(
+          { post_id: In([...postIds]) },
+          { select: ['post_id', 'user_id', 'is_like', 'is_save'] }
+        )
+      )
+    }
+
+    const response = await Promise.all(tasks.map((t) => t()))
+    users = response[0]
+    if (!isHasQuerySave) postUsers = response[1]
     const mapUser = arrayToMap(users, (user) => ({ key: user.id, value: user }))
 
     posts.forEach((post: any) => {
@@ -44,7 +66,11 @@ export class PostController {
 
       const likeCounts = postUsers.filter((pu) => pu.post_id === post.id && pu.is_like)
       post.like_count = likeCounts.length
-      post.post_user = postUsers.find((pu) => pu.user_id === userId && pu.post_id === post.id) || null
+      if (isHasQuerySave) {
+        post.post_users = postUsers.filter((pu) => pu.user_id === userId && pu.post_id === post.id)
+      } else {
+        post.post_user = postUsers.find((pu) => pu.user_id === userId && pu.post_id === post.id) || null
+      }
     })
 
     return posts

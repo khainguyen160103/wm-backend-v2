@@ -49,6 +49,8 @@ export class Post extends BaseEntity {
 
   post_users?: PostUser[]
 
+  post_user: PostUser
+
   @CreateDateColumn()
   created_at?: Date | string
 
