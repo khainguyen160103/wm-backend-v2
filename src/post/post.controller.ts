@@ -67,7 +67,7 @@ export class PostController {
       const likeCounts = postUsers.filter((pu) => pu.post_id === post.id && pu.is_like)
       post.like_count = likeCounts.length
       if (isHasQuerySave) {
-        post.post_users = postUsers.filter((pu) => pu.user_id === userId && pu.post_id === post.id)
+        post.post_users = postUsers.filter((pu) => pu.post_id === post.id)
       } else {
         post.post_user = postUsers.find((pu) => pu.user_id === userId && pu.post_id === post.id) || null
       }
