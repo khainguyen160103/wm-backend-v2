@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common'
 import { BaseService } from 'libs/services/base.service'
 import { In } from 'typeorm'
-import { User } from './entities'
-import { UserRepository } from './repository/user.repository'
+import { Account } from './entities'
+import { AccountRepository } from './repository/account.repository'
 import { USER_SELECT_FIELDS } from 'src/constants/user.constants'
 
 @Injectable()
-export class UserService extends BaseService<User> {
-  constructor(public repository: UserRepository) {
+export class AccountService extends BaseService<Account> {
+  constructor(public repository: AccountRepository) {
     super(repository)
   }
 
-  async getByEmail(params: { email: string }): Promise<User> {
+  async getByEmail(params: { email: string }): Promise<Account> {
     try {
       const { email } = params
 
@@ -23,7 +23,7 @@ export class UserService extends BaseService<User> {
     }
   }
 
-  async getByIds(params: { ids: number[] }): Promise<User[]> {
+  async getByIds(params: { ids: number[] }): Promise<Account[]> {
     const { ids } = params
 
     const users = await this.repository.find({ where: { id: In([...ids]) }, select: USER_SELECT_FIELDS as any })

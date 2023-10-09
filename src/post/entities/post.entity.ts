@@ -2,7 +2,7 @@ import { Category } from 'src/category/entities'
 import { Comment } from 'src/comment/entities'
 import { Hastag } from 'src/hastag/entities'
 import { Media } from 'src/media/entities'
-import { User } from 'src/user/entities'
+import { User } from 'src/account/entities'
 import {
   BaseEntity,
   Column,

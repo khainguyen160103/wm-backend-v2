@@ -15,7 +15,7 @@ import { MediaService } from './media.service'
 import { diskStorage } from 'multer'
 import { generateFilePath, imageFileFilter, setFileName } from 'src/utils/media'
 import { GetCurrentUserId, Public } from 'src/common/decorators'
-import { UserService } from 'src/user/user.service'
+import { UserService } from 'src/account/user.service'
 import { getCreatedBy } from 'src/utils/user'
 
 @Controller('media')

@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { SignInDto, SignUpDto } from './dto'
 import * as bcrypt from 'bcrypt'
-import { UserService } from 'src/user/user.service'
+import { UserService } from 'src/account/user.service'
 import { JwtPayload, Tokens } from './types'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10

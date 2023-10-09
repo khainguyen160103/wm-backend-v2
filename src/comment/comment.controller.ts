@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Delete, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
 import { GetCurrentUserId } from 'src/common/decorators'
-import { UserService } from 'src/user/user.service'
+import { UserService } from 'src/account/user.service'
 import { arrayToMap, getCreatedBy } from 'src/utils'
 import { CommentService } from './comment.service'
 import { CreateCommentDto } from './dto/create-comment.dto'

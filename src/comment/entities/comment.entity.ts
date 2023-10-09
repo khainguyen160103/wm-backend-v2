@@ -1,6 +1,6 @@
 import { Media } from 'src/media/entities'
 import { Post } from 'src/post/entities'
-import { User } from 'src/user/entities'
+import { User } from 'src/account/entities'
 import {
   BaseEntity,
   Column,

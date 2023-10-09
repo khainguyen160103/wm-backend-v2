@@ -4,7 +4,7 @@ import { MediaController } from './media.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MediaRepository } from './repository/media.repository'
 import { MulterModule } from '@nestjs/platform-express'
-import { UserModule } from 'src/user/user.module'
+import { UserModule } from 'src/account/user.module'
 
 @Module({
   imports: [

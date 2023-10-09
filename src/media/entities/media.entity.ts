@@ -1,4 +1,4 @@
-import { User } from 'src/user/entities'
+import { User } from 'src/account/entities'
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity()
