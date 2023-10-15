@@ -12,14 +12,14 @@ const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 export class AuthService {
   constructor(private accountService: AccountService, private jwtService: JwtService, private config: ConfigService) {}
 
-  async signupLocal(dto: SignUpDto): Promise<Tokens> {
+  async createAccount(dto: SignUpDto): Promise<Tokens> {
     const { email, password, name } = dto
 
     let user = await this.accountService.getByEmail({
       email,
     })
 
-    if (user) throw new ForbiddenException('User already exist')
+    if (user) throw new ForbiddenException('Account already exist')
 
     const hash = await bcrypt.hash(password, SALT_ROUNDS)
 

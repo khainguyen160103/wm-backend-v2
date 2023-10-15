@@ -9,10 +9,10 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @Post('local/signup')
+  @Post('/account/create')
   @HttpCode(HttpStatus.CREATED)
-  signupLocal(@Body() dto: SignUpDto): Promise<Tokens> {
-    return this.authService.signupLocal(dto)
+  createAccount(@Body() dto: SignUpDto): Promise<Tokens> {
+    return this.authService.createAccount(dto)
   }
 
   @Public()
