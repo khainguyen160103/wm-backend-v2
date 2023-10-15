@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Project } from 'src/modules/project/entities'
+import { Task } from 'src/modules/task/entities'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm'
 
 export enum SprintStatus {
   NEW = 'new',
@@ -18,6 +20,9 @@ export class Sprint extends BaseEntity {
   @Column({ name: 'project_id' })
   project_id: number
 
+  @ManyToOne(() => Project, (project) => project.boards)
+  project?: Project
+
   @Column({ name: 'start_at', type: 'date' })
   start_at?: Date | string
 
@@ -29,4 +34,7 @@ export class Sprint extends BaseEntity {
 
   @Column({ name: 'status', type: 'enum', enum: Object.values(SprintStatus), default: SprintStatus.NEW })
   status?: SprintStatus
+
+  @OneToMany(() => Task, (task) => task.sprint, { cascade: true })
+  tasks?: Task[]
 }

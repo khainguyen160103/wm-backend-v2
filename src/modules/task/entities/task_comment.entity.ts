@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToOne } from 'typeorm'
+import { Task } from './task.entity'
+import { Account } from 'src/modules/account/entities'
 
 @Entity()
 export class TaskComment extends BaseEntity {
@@ -16,4 +18,10 @@ export class TaskComment extends BaseEntity {
 
   @UpdateDateColumn()
   updated_at?: Date | string
+
+  @ManyToOne(() => Task, (task) => task.task_comments)
+  task?: Task
+
+  @ManyToOne(() => Account, (account) => account.task_comments)
+  account?: Account
 }

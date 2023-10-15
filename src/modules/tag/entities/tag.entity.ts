@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Task } from 'src/modules/task/entities'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToMany } from 'typeorm'
 
 @Entity()
 export class Tag extends BaseEntity {
@@ -13,4 +14,7 @@ export class Tag extends BaseEntity {
 
   @Column({ name: 'project_id' })
   project_id: number
+
+  @ManyToMany(() => Task, (task) => task.tags)
+  tasks: Task[]
 }

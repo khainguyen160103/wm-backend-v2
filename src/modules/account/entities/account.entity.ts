@@ -1,5 +1,6 @@
 import { Permission } from 'src/modules/permission/entities'
 import { Project } from 'src/modules/project/entities'
+import { Task, TaskComment, TaskHasFollower } from 'src/modules/task/entities'
 import {
   BaseEntity,
   Column,
@@ -48,7 +49,17 @@ export class Account extends BaseEntity {
   @OneToMany(() => Project, (project) => project.leader, { nullable: true })
   projects?: Project[]
 
-  @CreateDateColumn()
+  // tasks
+  @OneToMany(() => Task, (task) => task.assignee, { nullable: true })
+  task?: Task[]
+
+  @OneToMany(() => TaskHasFollower, (thf) => thf.account, { nullable: true })
+  task_has_followers?: TaskHasFollower[]
+
+  @OneToMany(() => TaskComment, (comment) => comment.account, { onDelete: 'SET NULL', onUpdate: 'NO ACTION' })
+  task_comments?: TaskComment[]
+
+  @CreateDateColumn({ update: false })
   created_at?: Date | string
 
   @UpdateDateColumn()

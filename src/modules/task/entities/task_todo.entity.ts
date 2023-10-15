@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm'
+import { Task } from './task.entity'
 
 @Entity()
 export class TaskTodo extends BaseEntity {
@@ -13,4 +14,7 @@ export class TaskTodo extends BaseEntity {
 
   @Column({ name: 'is_checked', type: 'boolean', default: false })
   is_checked?: boolean
+
+  @ManyToOne(() => Task, (task) => task.task_todos)
+  task?: Task
 }

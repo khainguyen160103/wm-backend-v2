@@ -1,4 +1,6 @@
 import { Account } from 'src/modules/account/entities'
+import { Board } from 'src/modules/board/entities'
+import { Sprint } from 'src/modules/sprint/entities'
 import {
   BaseEntity,
   Column,
@@ -7,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm'
 
 export enum ProjectType {
@@ -38,9 +41,15 @@ export class Project extends BaseEntity {
   leader_id?: number
 
   @ManyToOne(() => Account, (account) => account.projects, { nullable: true })
-  leader: Account
+  leader?: Account
 
-  @CreateDateColumn()
+  @OneToMany(() => Board, (board) => board.project, { cascade: true })
+  boards?: Board[]
+
+  @OneToMany(() => Sprint, (sprint) => sprint.project, { cascade: true })
+  sprints?: Sprint[]
+
+  @CreateDateColumn({ update: false })
   created_at?: Date | string
 
   @UpdateDateColumn()

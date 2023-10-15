@@ -1,4 +1,5 @@
-import { BaseEntity, Column as Col, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { TaskInColumm } from 'src/modules/task/entities/task_in_column.entity'
+import { BaseEntity, Column as Col, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
 
 @Entity()
 export class Column extends BaseEntity {
@@ -16,4 +17,7 @@ export class Column extends BaseEntity {
 
   @Col({ name: 'order', default: 0 })
   order: number
+
+  @OneToMany(() => TaskInColumm, (tic) => tic.column, { nullable: true })
+  task_in_column?: TaskInColumm[]
 }
