@@ -5,9 +5,10 @@ import { AccountService } from './account.service'
 import { AccountRepository } from './repository/account.repository'
 import { APP_GUARD } from '@nestjs/core'
 import { AtGuard } from 'src/common/guards'
+import { Account } from './entities'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AccountRepository])],
+  imports: [TypeOrmModule.forFeature([Account])],
   controllers: [AccountController],
   providers: [
     AccountService,
