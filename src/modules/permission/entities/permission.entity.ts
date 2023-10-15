@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Account } from 'src/modules/account/entities'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToMany } from 'typeorm'
 
 @Entity()
 export class Permission extends BaseEntity {
@@ -10,4 +11,7 @@ export class Permission extends BaseEntity {
 
   @Column({ name: 'description', type: 'longtext' })
   description: string
+
+  @ManyToMany(() => Account, (account) => account.permissions, { cascade: true })
+  accounts: Account[]
 }

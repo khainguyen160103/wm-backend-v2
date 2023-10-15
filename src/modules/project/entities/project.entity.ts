@@ -1,4 +1,13 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Account } from 'src/modules/account/entities'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm'
 
 export enum ProjectType {
   SCRUM = 'scrum',
@@ -13,9 +22,6 @@ export class Project extends BaseEntity {
   @Column({ name: 'name', length: 50 })
   name: string
 
-  @Column({ name: 'leader_id' })
-  leader_id: number
-
   @Column({ name: 'description', type: 'longtext' })
   description?: string
 
@@ -27,6 +33,12 @@ export class Project extends BaseEntity {
 
   @Column({ name: 'color', length: 12 })
   color: string
+
+  @Column({ name: 'leader_id' })
+  leader_id?: number
+
+  @ManyToOne(() => Account, (account) => account.projects, { nullable: true })
+  leader: Account
 
   @CreateDateColumn()
   created_at?: Date | string

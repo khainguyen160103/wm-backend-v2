@@ -1,4 +1,16 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Permission } from 'src/modules/permission/entities'
+import { Project } from 'src/modules/project/entities'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity()
 export class Account extends BaseEntity {
@@ -28,6 +40,13 @@ export class Account extends BaseEntity {
 
   @Column({ name: 'color', length: 12 })
   color: string
+
+  @ManyToMany(() => Permission, (permission) => permission.accounts, {})
+  @JoinTable({ name: 'account_has_permissions' })
+  permissions: Permission[]
+
+  @OneToMany(() => Project, (project) => project.leader, { nullable: true })
+  projects?: Project[]
 
   @CreateDateColumn()
   created_at?: Date | string

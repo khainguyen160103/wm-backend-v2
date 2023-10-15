@@ -10,7 +10,7 @@ import { Permission } from './entities'
 import { AccountModule } from '../account/account.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Permission]), AccountModule],
+  imports: [TypeOrmModule.forFeature([PermissionRepository]), AccountModule],
   controllers: [PermissionController],
   providers: [
     {
