@@ -4,10 +4,10 @@ import { JwtModule } from '@nestjs/jwt'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { AtStrategy } from './strategies'
-import { UserModule } from 'src/account/user.module'
+import { AccountModule } from 'src/modules/account/account.module'
 
 @Module({
-  imports: [JwtModule.register({ global: true }), ConfigModule, UserModule],
+  imports: [JwtModule.register({ global: true }), ConfigModule, AccountModule],
   controllers: [AuthController],
   providers: [AuthService, AtStrategy],
   exports: [AuthService],

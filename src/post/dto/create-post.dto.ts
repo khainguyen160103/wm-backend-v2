@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from 'class-validator'
-import { Category } from 'src/category/entities'
-import { Media } from 'src/media/entities'
+// import { Category } from 'src/category/entities'
+// import { Media } from 'src/media/entities'
 
 export class CreatePostDto {
   @IsString()
@@ -11,7 +11,7 @@ export class CreatePostDto {
   @IsNotEmpty()
   content: string
 
-  medias?: Media[]
+  // medias?: Media[]
 
-  category?: Category
+  // category?: Category
 }

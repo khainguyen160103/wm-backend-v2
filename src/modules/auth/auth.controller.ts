@@ -1,5 +1,5 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common'
-import { Public, GetCurrentUserId } from '../common/decorators'
+import { Public, GetCurrentUserId } from 'src/common/decorators'
 import { AuthService } from './auth.service'
 import { SignInDto, SignUpDto } from './dto'
 import { Tokens } from './types'

@@ -1,14 +1,13 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
-import { ConfigModule } from '@nestjs/config'
+import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { AuthGuard } from '@nestjs/passport'
 import { Request } from 'express'
-import { UserService } from 'src/account/user.service'
+import { AccountService } from 'src/modules/account/account.service'
 
 @Injectable()
 export class AtGuard extends AuthGuard('jwt') {
-  constructor(private reflector: Reflector, private jwtService: JwtService, private userService: UserService) {
+  constructor(private reflector: Reflector, private jwtService: JwtService, private accountService: AccountService) {
     super()
   }
 

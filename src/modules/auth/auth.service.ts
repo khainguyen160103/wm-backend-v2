@@ -3,19 +3,19 @@ import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { SignInDto, SignUpDto } from './dto'
 import * as bcrypt from 'bcrypt'
-import { UserService } from 'src/account/user.service'
+import { AccountService } from 'src/modules/account/account.service'
 import { JwtPayload, Tokens } from './types'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService, private jwtService: JwtService, private config: ConfigService) {}
+  constructor(private accountService: AccountService, private jwtService: JwtService, private config: ConfigService) {}
 
   async signupLocal(dto: SignUpDto): Promise<Tokens> {
     const { email, password, name } = dto
 
-    let user = await this.userService.getByEmail({
+    let user = await this.accountService.getByEmail({
       email,
     })
 
@@ -23,7 +23,7 @@ export class AuthService {
 
     const hash = await bcrypt.hash(password, SALT_ROUNDS)
 
-    user = await this.userService.create({ email, password: hash, name: email || name })
+    user = await this.accountService.create({ email, password: hash, name: email || name })
 
     const tokens = await this.getTokens(user.id, user.email)
 
@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   async signinLocal(dto: SignInDto): Promise<Tokens> {
-    const user = await this.userService.getByEmail({
+    const user = await this.accountService.getByEmail({
       email: dto.email,
     })
 

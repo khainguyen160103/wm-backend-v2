@@ -8,7 +8,7 @@ async function bootstrap() {
 
   await Promise.all([
     app.enableCors(),
-    app.setGlobalPrefix('api/v1'),
+    app.setGlobalPrefix('api'),
     app.useGlobalPipes(new ValidationPipe()),
     await app.listen(port),
   ])
