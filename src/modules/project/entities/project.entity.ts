@@ -1,30 +1,29 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
+export enum ProjectType {
+  SCRUM = 'scrum',
+  KANBAN = 'kanban',
+}
+
 @Entity()
-export class Account extends BaseEntity {
+export class Project extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
-
-  @Column({ name: 'email', length: 50 })
-  email: string
-
-  @Column({ name: 'password', length: 12 })
-  password: string
 
   @Column({ name: 'name', length: 50 })
   name: string
 
-  @Column({ name: 'date_of_birth' })
-  date_of_birth: Date
+  @Column({ name: 'leader_id' })
+  leader_id: number
 
-  @Column({ name: 'gender', type: 'tinyint' })
-  gender: number
-
-  @Column({ name: 'phone' })
-  phone: number
+  @Column({ name: 'description', type: 'longtext' })
+  description?: string
 
   @Column({ name: 'avatar' })
-  avatar: string
+  avatar: number
+
+  @Column({ name: 'type', type: 'enum', enum: Object.values(ProjectType), default: ProjectType.KANBAN })
+  type: number
 
   @Column({ name: 'color', length: 12 })
   color: string
