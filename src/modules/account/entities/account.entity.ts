@@ -21,23 +21,23 @@ export class Account extends BaseEntity {
   @Column({ name: 'email', length: 50 })
   email: string
 
-  @Column({ name: 'password', length: 12 })
+  @Column({ name: 'password' })
   password: string
 
   @Column({ name: 'name', length: 50 })
   name: string
 
-  @Column({ name: 'date_of_birth' })
-  date_of_birth: Date
+  @Column({ name: 'date_of_birth', nullable: true })
+  date_of_birth?: Date
 
-  @Column({ name: 'gender', type: 'tinyint' })
+  @Column({ name: 'gender', type: 'tinyint', default: 0 })
   gender: number
 
-  @Column({ name: 'phone' })
-  phone: number
+  @Column({ name: 'phone', nullable: true })
+  phone?: string
 
-  @Column({ name: 'avatar' })
-  avatar: string
+  @Column({ name: 'avatar', nullable: true })
+  avatar?: string
 
   @Column({ name: 'color', length: 12 })
   color: string

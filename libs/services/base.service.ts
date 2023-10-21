@@ -86,16 +86,33 @@ export class BaseService<T extends BaseEntity> {
   async update(id: string | number, model: DeepPartial<T>): Promise<T> {
     try {
       const user = cloneDeep(model) as any
-      if (user.userId) {
+      if (user.accountId) {
         const exist = await (this.genericRepository as any).findOne({ where: { id } })
-        if (exist.created_by_id === user.userId) return new UnauthorizedException('Dont have permission') as any
+        if (exist.created_by_id === user.accountId) return new UnauthorizedException('Dont have permission') as any
       }
 
       const country: T = await this.getById(id)
       const updatedCountry = Object.assign(country, model)
-      return await this.genericRepository.save(updatedCountry)
+      await this.genericRepository.save(updatedCountry)
+      return this.getById(id)
     } catch (error) {
       throw new BadRequestException(error)
+    }
+  }
+
+  async list(query?: any) {
+    const take = query?.take || 10
+    const skip = query?.skip || 0
+
+    const [result, total] = await this.genericRepository.findAndCount({
+      where: {},
+      take: take,
+      skip: skip,
+    })
+
+    return {
+      data: result,
+      count: total,
     }
   }
 }
