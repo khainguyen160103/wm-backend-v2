@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus, Req } from '@nestjs/common'
 import { GetCurrentUserId } from 'src/common/decorators'
 import { AccountService } from './account.service'
 import { Account } from './entities'
-import { USER_SELECT_FIELDS } from 'src/constants/user.constants'
+import { ACCOUNT_SELECT_FIELDS } from 'src/constants/user.constants'
 
 @Controller('account')
 export class AccountController {
@@ -13,7 +13,7 @@ export class AccountController {
   profile(@GetCurrentUserId() accountId: number) {
     if (!accountId) return null
 
-    return this.accountService.getById(accountId, { select: USER_SELECT_FIELDS })
+    return this.accountService.getById(accountId, { select: ACCOUNT_SELECT_FIELDS })
   }
 
   @Get()

@@ -22,7 +22,7 @@ export class BaseService<T extends BaseEntity> {
   async afterGet(result: T | T[]) {
     if (!result) return result
 
-    if (this.genericRepository.metadata.name === 'user' || 'User') delete (result as any).password
+    if (this.genericRepository.metadata.name === 'account' || 'Account') delete (result as any).password
 
     return result
   }
@@ -100,7 +100,9 @@ export class BaseService<T extends BaseEntity> {
     }
   }
 
-  async list(query?: any) {
+  async list(query?: any, options: BaseServiceOptions = {}) {
+    if (Object.keys(options).length) this.beforeGet(options)
+
     const take = query?.take || 10
     const skip = query?.skip || 0
 
