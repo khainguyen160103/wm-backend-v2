@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Req } from '@nestjs/common'
+import { Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common'
 import { GetCurrentUserId } from 'src/common/decorators'
 import { AccountService } from './account.service'
 import { Account } from './entities'
@@ -19,5 +19,11 @@ export class AccountController {
   @Get()
   getByCondition(query?: Account): Promise<Account[]> {
     return this.accountService.getByCondition(query)
+  }
+
+  @Post('/list')
+  @HttpCode(HttpStatus.OK)
+  list(query?: any): Promise<any> {
+    return this.accountService.list(query)
   }
 }

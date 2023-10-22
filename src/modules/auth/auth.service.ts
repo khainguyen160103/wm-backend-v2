@@ -1,11 +1,14 @@
+import * as bcrypt from 'bcrypt'
+
 import { ForbiddenException, Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
+
+import { randomColor } from 'src/utils'
 import { ChangePasswordDto, SignInDto, SignUpDto } from './dto'
-import * as bcrypt from 'bcrypt'
-import { AccountService } from 'src/modules/account/account.service'
 import { JwtPayload, Tokens } from './types'
-import { randomColor, randomString } from 'src/utils'
+import { AccountService } from 'src/modules/account/account.service'
+import { ADMIN_PERMISSION, MEMBER_PERMISSION } from 'src/constants/permission.constants'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 const DEFAULT_PASSWORD = '012345AX'
@@ -36,6 +39,7 @@ export class AuthService {
       date_of_birth,
       phone,
       color: randomColor(),
+      permissions: [MEMBER_PERMISSION],
     })
 
     const tokens = await this.getTokens(account.id, account.email)
