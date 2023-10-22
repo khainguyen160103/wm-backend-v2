@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt'
 
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common'
+import { ForbiddenException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
@@ -8,14 +8,13 @@ import { randomColor } from 'src/utils'
 import { ChangePasswordDto, SignInDto, SignUpDto } from './dto'
 import { JwtPayload, Tokens } from './types'
 import { AccountService } from 'src/modules/account/account.service'
-import { ADMIN_PERMISSION, MEMBER_PERMISSION } from 'src/constants/permission.constants'
+import { MEMBER_PERMISSION } from 'src/constants/permission.constants'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 const DEFAULT_PASSWORD = '012345AX'
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(AuthService.name)
   constructor(private accountService: AccountService, private jwtService: JwtService, private config: ConfigService) {}
 
   async createAccount(dto: SignUpDto): Promise<Tokens> {

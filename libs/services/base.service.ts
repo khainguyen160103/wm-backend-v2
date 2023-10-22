@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
-import { BaseEntity, DeepPartial, Repository, FindOneOptions } from 'typeorm'
+import { BaseEntity, DeepPartial, Repository } from 'typeorm'
 import { cloneDeep } from 'lodash'
-import { BaseServiceOptions } from './types/options.types'
+
+import { BaseServiceOptions, ParamsList } from './types'
 
 @Injectable()
 export class BaseService<T extends BaseEntity> {
@@ -100,14 +101,17 @@ export class BaseService<T extends BaseEntity> {
     }
   }
 
-  async list(query?: any, options: BaseServiceOptions = {}) {
+  async list(query?: ParamsList<T>, options: BaseServiceOptions = {}) {
     if (Object.keys(options).length) this.beforeGet(options)
 
     const take = query?.take || 10
     const skip = query?.skip || 0
 
     const [result, total] = await this.genericRepository.findAndCount({
-      where: {},
+      where: {
+        ...query.query,
+      },
+      ...(options as any),
       take: take,
       skip: skip,
     })
