@@ -21,10 +21,10 @@ export class AuthController {
   }
 
   @Public()
-  @Post('/signin')
+  @Post('/login')
   @HttpCode(HttpStatus.OK)
-  signinLocal(@Body() dto: SignInDto): Promise<Tokens> {
-    return this.authService.signinLocal(dto)
+  loginLocal(@Body() dto: SignInDto): Promise<Tokens> {
+    return this.authService.loginLocal(dto)
   }
 
   @Post('logout')

@@ -61,7 +61,7 @@ export class AuthService {
     return true
   }
 
-  async signinLocal(dto: SignInDto): Promise<Tokens> {
+  async loginLocal(dto: SignInDto): Promise<Tokens> {
     const account = await this.accountService.getByEmail({
       email: dto.email,
     })

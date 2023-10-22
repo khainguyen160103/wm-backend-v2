@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
-import { BaseEntity, DeepPartial, Repository } from 'typeorm'
+import { BaseEntity, DeepPartial, Like, Repository } from 'typeorm'
 import { cloneDeep } from 'lodash'
 
 import { BaseServiceOptions, ParamsList } from './types'
@@ -106,10 +106,12 @@ export class BaseService<T extends BaseEntity> {
 
     const take = query?.take || 10
     const skip = query?.skip || 0
+    const search = query?.search?.trim().length ? query.search : null
 
     const [result, total] = await this.genericRepository.findAndCount({
       where: {
         ...query.query,
+        ...(search ? { name: Like('%' + search + '%') } : {}),
       },
       ...(options as any),
       take: take,
