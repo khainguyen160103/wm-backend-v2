@@ -33,7 +33,7 @@ export class AuthService {
     account = await this.accountService.create({
       email,
       password: hash,
-      name: email || name,
+      name: name || email,
       gender,
       date_of_birth,
       phone,

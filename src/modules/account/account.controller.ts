@@ -23,9 +23,8 @@ export class AccountController {
 
   @Post('/list')
   @HttpCode(HttpStatus.OK)
-  list(@Body() query?: any): Promise<any> {
-    console.log('query: ', query)
-    return this.accountService.list(query)
+  list(@Body() params?: { query: any; options?: any }): Promise<any> {
+    return this.accountService.list(params.query, params.options)
   }
 
   @Put()

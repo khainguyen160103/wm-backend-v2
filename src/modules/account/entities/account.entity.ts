@@ -14,8 +14,7 @@ import {
 } from 'typeorm'
 
 @Entity()
-export class 
-Account extends BaseEntity {
+export class Account extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
@@ -43,7 +42,7 @@ Account extends BaseEntity {
   @Column({ name: 'color', length: 12 })
   color: string
 
-  @ManyToMany(() => Permission, (permission) => permission.accounts, {})
+  @ManyToMany(() => Permission, (permission) => permission.accounts)
   @JoinTable({ name: 'account_has_permissions' })
   permissions: Permission[]
 
