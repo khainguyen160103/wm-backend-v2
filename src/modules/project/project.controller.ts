@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put } from '@nestjs/common'
 import { ProjectService } from './project.service'
 import { CreateProjectDto, UpdateProjectDto } from './dto'
+import { Project } from './entities'
 
 @Controller('project')
 export class ProjectController {
@@ -20,7 +21,9 @@ export class ProjectController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  get(@Body() dto: any) {
-    return this.projectService.getByCondition(dto)
+  get(@Body() params: { query?: Project; options?: any }) {
+    return this.projectService.getByCondition(params.query, {
+      relations: ['leader'],
+    })
   }
 }
