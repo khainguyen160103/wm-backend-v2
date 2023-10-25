@@ -28,11 +28,11 @@ export class Project extends BaseEntity {
   @Column({ name: 'description', type: 'longtext' })
   description?: string
 
-  @Column({ name: 'avatar' })
-  avatar: number
+  @Column({ name: 'avatar', nullable: true })
+  avatar?: number
 
   @Column({ name: 'type', type: 'enum', enum: Object.values(ProjectType), default: ProjectType.KANBAN })
-  type: number
+  type: ProjectType
 
   @Column({ name: 'color', length: 12 })
   color: string

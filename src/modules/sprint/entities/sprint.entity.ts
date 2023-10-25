@@ -23,14 +23,14 @@ export class Sprint extends BaseEntity {
   @ManyToOne(() => Project, (project) => project.boards)
   project?: Project
 
-  @Column({ name: 'start_at', type: 'date' })
+  @Column({ name: 'start_at', type: 'date', nullable: true })
   start_at?: Date | string
 
-  @Column({ name: 'end_at', type: 'date' })
+  @Column({ name: 'end_at', type: 'date', nullable: true })
   end_at?: Date | string
 
-  @Column({ name: 'goal', type: 'longtext' })
-  goal: string
+  @Column({ name: 'goal', type: 'longtext', nullable: true })
+  goal?: string
 
   @Column({ name: 'status', type: 'enum', enum: Object.values(SprintStatus), default: SprintStatus.NEW })
   status?: SprintStatus

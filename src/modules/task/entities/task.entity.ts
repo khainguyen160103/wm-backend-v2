@@ -28,8 +28,8 @@ export class Task extends BaseEntity {
   @Column({ name: 'name', length: 50 })
   name: string
 
-  @Column({ name: 'description', type: 'longtext' })
-  description: string
+  @Column({ name: 'description', type: 'longtext', nullable: true })
+  description?: string
 
   @ManyToOne(() => Account, (account) => account.task, { nullable: true })
   assignee?: Account
@@ -37,7 +37,7 @@ export class Task extends BaseEntity {
   @Column({ name: 'assignee_id', nullable: true })
   assignee_id?: number
 
-  @Column({ name: 'due_date', type: 'date' })
+  @Column({ name: 'due_date', type: 'date', nullable: true })
   due_date?: Date | string
 
   @Column({ name: 'sprint_id' })

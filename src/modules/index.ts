@@ -3,6 +3,7 @@ export * from './auth/auth.module'
 export * from './permission/permission.module'
 
 // project
+export * from './project/project.module'
 export * from './board/board.module'
 export * from './column/column.module'
 export * from './sprint/sprint.module'
