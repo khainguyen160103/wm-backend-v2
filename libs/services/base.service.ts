@@ -104,10 +104,10 @@ export class BaseService<T extends BaseEntity> {
   async list(query?: ParamsList<T>, options: BaseServiceOptions = {}) {
     if (Object.keys(options).length) this.beforeGet(options)
 
-    const take = query?.take || 10
-    const skip = query?.skip || 0
+    const take = query?.pageSize || 10
+    const page = query?.page || 1
+    const skip = (page - 1) * take
     const search = query?.search?.trim().length ? query.search : null
-
     const [result, total] = await this.genericRepository.findAndCount({
       where: {
         ...query.query,
@@ -120,7 +120,9 @@ export class BaseService<T extends BaseEntity> {
 
     return {
       data: result,
-      count: total,
+      page,
+      pageSize: take,
+      total,
     }
   }
 }

@@ -14,7 +14,8 @@ import {
 } from 'typeorm'
 
 @Entity()
-export class Account extends BaseEntity {
+export class 
+Account extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 

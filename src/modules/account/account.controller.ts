@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put } from '@nestjs/common'
 import { GetCurrentUserId } from 'src/common/decorators'
 import { AccountService } from './account.service'
 import { Account } from './entities'
@@ -23,7 +23,14 @@ export class AccountController {
 
   @Post('/list')
   @HttpCode(HttpStatus.OK)
-  list(query?: any): Promise<any> {
+  list(@Body() query?: any): Promise<any> {
+    console.log('query: ', query)
     return this.accountService.list(query)
+  }
+
+  @Put()
+  @HttpCode(HttpStatus.OK)
+  update(@Body() dto: Account) {
+    return this.accountService.update(dto.id, dto)
   }
 }
