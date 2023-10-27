@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
 import { ProjectService } from './project.service'
 import { CreateProjectDto, UpdateProjectDto } from './dto'
 import { Project } from './entities'
@@ -25,5 +25,11 @@ export class ProjectController {
     return this.projectService.getByCondition(params.query, {
       relations: ['leader'],
     })
+  }
+
+  @Get('/:id')
+  @HttpCode(HttpStatus.OK)
+  getById(@Param(':id') id: number) {
+    return this.projectService.getById(id)
   }
 }
