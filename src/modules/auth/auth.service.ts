@@ -9,6 +9,7 @@ import { ChangePasswordDto, SignInDto, SignUpDto } from './dto'
 import { JwtPayload, Tokens } from './types'
 import { AccountService } from 'src/modules/account/account.service'
 import { MEMBER_PERMISSION } from 'src/constants/permission.constants'
+import { Account } from '../account/entities'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 const DEFAULT_PASSWORD = '012345AX'
@@ -17,7 +18,7 @@ const DEFAULT_PASSWORD = '012345AX'
 export class AuthService {
   constructor(private accountService: AccountService, private jwtService: JwtService, private config: ConfigService) {}
 
-  async createAccount(dto: SignUpDto): Promise<Tokens> {
+  async createAccount(dto: SignUpDto): Promise<Account> {
     const { email, name, gender, date_of_birth, phone } = dto
 
     let account = await this.accountService.getByEmail({
@@ -41,9 +42,9 @@ export class AuthService {
       permissions: [MEMBER_PERMISSION],
     })
 
-    const tokens = await this.getTokens(account.id, account.email)
+    this.getTokens(account.id, account.email)
 
-    return tokens
+    return account
   }
 
   async changePassword(dto: ChangePasswordDto) {

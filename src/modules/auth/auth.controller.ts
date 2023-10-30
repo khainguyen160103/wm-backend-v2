@@ -3,6 +3,7 @@ import { Public, GetCurrentUserId } from 'src/common/decorators'
 import { AuthService } from './auth.service'
 import { ChangePasswordDto, SignInDto, SignUpDto } from './dto'
 import { Tokens } from './types'
+import { Account } from '../account/entities'
 
 @Controller('auth')
 export class AuthController {
@@ -11,7 +12,7 @@ export class AuthController {
   @Public()
   @Post('/account')
   @HttpCode(HttpStatus.CREATED)
-  createAccount(@Body() dto: SignUpDto): Promise<Tokens> {
+  createAccount(@Body() dto: SignUpDto): Promise<Account> {
     return this.authService.createAccount(dto)
   }
 
