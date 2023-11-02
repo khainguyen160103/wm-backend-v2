@@ -13,7 +13,7 @@ import { join } from 'path'
         host: 'smtp.example.com',
         secure: false,
         auth: {
-          user: 'user@example.com',
+          user: 'quangtrn8821@gmail.com',
           pass: 'topsecret',
         },
       },

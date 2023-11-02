@@ -10,7 +10,7 @@ import { JwtPayload, Tokens } from './types'
 import { AccountService } from 'src/modules/account/account.service'
 import { MEMBER_PERMISSION } from 'src/constants/permission.constants'
 import { Account } from '../account/entities'
-import EventEmitter2 from 'eventemitter2'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 const DEFAULT_PASSWORD = '012345AX'
