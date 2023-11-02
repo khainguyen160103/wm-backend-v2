@@ -11,3 +11,6 @@ export * from './tag/tag.module'
 
 // task
 export * from './task/task.module'
+
+// mail
+export * from './mail/mail.module'
