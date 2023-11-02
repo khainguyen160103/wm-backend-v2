@@ -10,13 +10,19 @@ import { JwtPayload, Tokens } from './types'
 import { AccountService } from 'src/modules/account/account.service'
 import { MEMBER_PERMISSION } from 'src/constants/permission.constants'
 import { Account } from '../account/entities'
+import EventEmitter2 from 'eventemitter2'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 const DEFAULT_PASSWORD = '012345AX'
 
 @Injectable()
 export class AuthService {
-  constructor(private accountService: AccountService, private jwtService: JwtService, private config: ConfigService) {}
+  constructor(
+    private accountService: AccountService,
+    private jwtService: JwtService,
+    private config: ConfigService,
+    private eventEmitter: EventEmitter2
+  ) {}
 
   async createAccount(dto: SignUpDto): Promise<Account> {
     const { email, name, gender, date_of_birth, phone } = dto
@@ -40,6 +46,11 @@ export class AuthService {
       phone,
       color: randomColor(),
       permissions: [MEMBER_PERMISSION],
+    })
+
+    this.eventEmitter.emit('account.create', {
+      account,
+      password,
     })
 
     this.getTokens(account.id, account.email)

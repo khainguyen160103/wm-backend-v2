@@ -1,5 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
+import { OnEvent } from '@nestjs/event-emitter'
+import { Account } from '../account/entities'
 // import { User } from './../user/user.entity'
 
 @Injectable()
@@ -20,5 +22,11 @@ export class MailService {
         url,
       },
     })
+  }
+
+  // account events
+  @OnEvent('account.create')
+  onAccountCreate(params: { account: Account; password: string }) {
+    console.log('onAccountCreate: ', params)
   }
 }
