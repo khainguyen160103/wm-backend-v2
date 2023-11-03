@@ -15,7 +15,9 @@ import {
   SprintModule,
   TagModule,
   TaskModule,
+  MailModule,
 } from './modules'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 
 import { AtGuard } from './common/guards'
 import { AppController } from './app.controller'
@@ -31,10 +33,16 @@ const modules = [
   SprintModule,
   TagModule,
   TaskModule,
+  MailModule,
 ]
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), TypeOrmModule.forRoot(configureDb()), ...modules],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot(configureDb()),
+    EventEmitterModule.forRoot(),
+    ...modules,
+  ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: AtGuard }, AppService],
 })

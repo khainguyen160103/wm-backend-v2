@@ -33,4 +33,10 @@ export class AuthController {
   logout(@GetCurrentUserId() accountId: number): Promise<boolean> {
     return this.authService.logout(accountId)
   }
+
+  @Post('test/mail')
+  @HttpCode(HttpStatus.OK)
+  testMail() {
+    return this.authService.testMail()
+  }
 }
