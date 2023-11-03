@@ -109,4 +109,8 @@ export class AuthService {
       access_token: at,
     }
   }
+
+  testMail() {
+    this.eventEmitter.emit('mail.test', {})
+  }
 }
