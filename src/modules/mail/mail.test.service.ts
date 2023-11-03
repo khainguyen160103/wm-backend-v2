@@ -8,7 +8,16 @@ export class MailTestService {
 
   // account events
   @OnEvent('mail.test')
-  onMailTest() {
-    console.log('onMailTest: ')
+  async onMailTest() {
+    await this.mailerService.sendMail({
+      to: 'quangtrn8821@gmail.com',
+      // from: '"Support Team" <support@example.com>', // override default from
+      subject: 'Welcome to Nice App! Confirm your Email',
+      template: './mail-password', // `.hbs` extension is appended automatically
+      context: {
+        // ✏️ filling curly brackets with content
+        name: 'quangtrn8821@gmail.com',
+      },
+    })
   }
 }

@@ -15,14 +15,14 @@ import { join } from 'path'
         secure: false,
         auth: {
           user: 'quangtrn8821@gmail.com',
-          pass: 'topsecret',
+          pass: 'itwdmkkepcwiubpl',
         },
       },
       defaults: {
         from: '"No Reply" <noreply@example.com>',
       },
       template: {
-        dir: join(__dirname, 'templates'),
+        dir: join(__dirname, 'src/templates'),
         adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
         options: {
           strict: true,
