@@ -12,7 +12,6 @@ export class TaskCommentController {
   async getComment(@Param(':task_id') task_id: number) {
     return await this.taskCommentService.getByCondition({ task_id })
   }
-  // url: {{api}}/task/comment
   @Post()
   @HttpCode(HttpStatus.CREATED)
    createComment(@Body() dto : CreateCommentTaskDto , @GetCurrentUserId() accountId : number) { 
