@@ -12,7 +12,6 @@ export class TaskCommentController {
   @Get('/:task_id')
   @HttpCode(HttpStatus.OK)
   async getComment(@Param('task_id') task_id: number) {
-    console.log(task_id);
     return await this.taskCommentService.getByCondition({ task_id })
   }
 
@@ -37,7 +36,7 @@ export class TaskCommentController {
 
   @Delete('/:task_comment_id')
   @HttpCode(HttpStatus.OK)
-  delete(@Param("task_comment_id") task_comment_id: number) { 
+  delete(@Param('task_comment_id') task_comment_id: number) {
     return this.taskCommentService.delete(task_comment_id)
   }
 }
