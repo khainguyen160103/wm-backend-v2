@@ -68,7 +68,6 @@ export class BaseService<T extends BaseEntity> {
   async create(model: DeepPartial<T>): Promise<T> {
     try {
       const country = await this.genericRepository.create(model)
-
       return country.save()
     } catch (error) {
       throw new BadRequestException(error)

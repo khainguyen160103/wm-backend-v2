@@ -9,19 +9,21 @@ import { Task, TaskComment, TaskFile, TaskHasFollower, TaskTodo } from './entiti
 import { TaskInColumm } from './entities/task_in_column.entity'
 import { TaskCommentService } from './task_comment.service'
 import { TaskCommentController } from './task_comment.controller'
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([Task, TaskComment, TaskFile, TaskTodo, TaskHasFollower, TaskInColumm]),
     AccountModule,
   ],
-  controllers: [TaskController,TaskCommentController],
+  controllers: [TaskController, TaskCommentController],
   providers: [
     {
       provide: APP_GUARD,
       useClass: AtGuard,
     },
-    TaskService,TaskCommentService,
+    TaskService,
+    TaskCommentService,
   ],
-  exports: [TaskService , TaskCommentService],
+  exports: [TaskService, TaskCommentService],
 })
 export class TaskModule {}
