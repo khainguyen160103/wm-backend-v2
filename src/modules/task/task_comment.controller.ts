@@ -1,7 +1,8 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
 import { TaskCommentService } from './task_comment.service'
 import { CreateCommentTaskDto } from './dto/create-commentTask.dto'
 import { GetCurrentUserId } from 'src/common/decorators'
+import { UpdateCommentTaskDto } from './dto/update-comment.dto'
 
 @Controller('task/comment')
 export class TaskCommentController {
@@ -10,7 +11,8 @@ export class TaskCommentController {
   // url: {{api}}/task/comment/:task_id
   @Get('/:task_id')
   @HttpCode(HttpStatus.OK)
-  async getComment(@Param(':task_id') task_id: number) {
+  async getComment(@Param('task_id') task_id: number) {
+    console.log(task_id);
     return await this.taskCommentService.getByCondition({ task_id })
   }
 
@@ -24,5 +26,18 @@ export class TaskCommentController {
       content,
       account_id: accountId,
     })
+  }
+
+  @Put()
+  @HttpCode(HttpStatus.OK)
+  update(@Body() dto: UpdateCommentTaskDto, @GetCurrentUserId() accountId: number) {
+    const { content, task_comment_id } = dto
+    return this.taskCommentService.update(task_comment_id, { content })
+  }
+
+  @Delete('/:task_comment_id')
+  @HttpCode(HttpStatus.OK)
+  delete(@Param("task_comment_id") task_comment_id: number) { 
+    return this.taskCommentService.delete(task_comment_id)
   }
 }
