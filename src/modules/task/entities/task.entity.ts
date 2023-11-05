@@ -14,7 +14,7 @@ import {
   JoinTable,
 } from 'typeorm'
 import { TaskHasFollower } from './task_has_follower.entity'
-import { TaskInColumm } from './task_in_column.entity'
+import { TaskInColumn } from './task_in_column.entity'
 import { Tag } from 'src/modules/tag/entities'
 import { TaskTodo } from './task_todo.entity'
 import { TaskFile } from './task_file.entity'
@@ -55,8 +55,8 @@ export class Task extends BaseEntity {
   @OneToMany(() => TaskHasFollower, (thf) => thf.task)
   task_has_followers?: TaskHasFollower[]
 
-  @OneToMany(() => TaskInColumm, (tic) => tic.task)
-  task_in_column?: TaskInColumm[]
+  @OneToMany(() => TaskInColumn, (tic) => tic.task)
+  task_in_column?: TaskInColumn[]
 
   @OneToMany(() => TaskTodo, (todo) => todo.task, { cascade: true })
   task_todos?: TaskTodo[]

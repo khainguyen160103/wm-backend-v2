@@ -6,13 +6,13 @@ import { TaskService } from './task.service'
 import { TaskController } from './task.controller'
 import { AccountModule } from '../account/account.module'
 import { Task, TaskComment, TaskFile, TaskHasFollower, TaskTodo } from './entities'
-import { TaskInColumm } from './entities/task_in_column.entity'
+import { TaskInColumn } from './entities/task_in_column.entity'
 import { TaskCommentService } from './task_comment.service'
 import { TaskCommentController } from './task_comment.controller'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Task, TaskComment, TaskFile, TaskTodo, TaskHasFollower, TaskInColumm]),
+    TypeOrmModule.forFeature([Task, TaskComment, TaskFile, TaskTodo, TaskHasFollower, TaskInColumn]),
     AccountModule,
   ],
   controllers: [TaskController, TaskCommentController],

@@ -3,7 +3,7 @@ import { Task } from './task.entity'
 import { Column } from 'src/modules/column/entities'
 
 @Entity('task_in_column')
-export class TaskInColumm {
+export class TaskInColumn {
   @ManyToOne(() => Column, (column) => column.task_in_column)
   column?: Column
 
