@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
-export class UpdateTagDto { 
-    @IsNotEmpty() 
+export class UpdateBoardDto  { 
+    @IsNotEmpty()
     id: number
 
     @IsOptional()
@@ -9,5 +9,5 @@ export class UpdateTagDto {
 
     @IsOptional()
     @IsString()
-    color: string
+    icon: string
 }

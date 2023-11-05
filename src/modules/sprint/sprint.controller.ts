@@ -10,8 +10,14 @@ export class SprintController {
   @HttpCode(HttpStatus.FOUND)
   async get(@Param("id") id: number) { 
     return await this.sprintService.getByCondition({id})
-   }
-
+  }
+  
+  @Get()
+  @HttpCode(HttpStatus.FOUND)
+  async getAll() { 
+    return await this.sprintService.getByCondition()
+  }
+  
   @Post() 
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateSprintDto) { 

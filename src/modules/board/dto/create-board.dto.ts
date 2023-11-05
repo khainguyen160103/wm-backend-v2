@@ -1,9 +1,12 @@
 import { IsNotEmpty, IsString } from 'class-validator'
-export class UpdateCommentTaskDto { 
+export class CreateBoardDto { 
     @IsNotEmpty()
     @IsString()
-    content: string;
+    name: string
 
     @IsNotEmpty()
-    task_comment_id: number;  
+    project_id: number
+
+    @IsNotEmpty()
+    icon: string
 }

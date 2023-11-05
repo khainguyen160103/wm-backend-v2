@@ -19,10 +19,16 @@ export class TagController {
     return await this.tagService.getByCondition({id})
   }
 
+  @Get()
+  @HttpCode(HttpStatus.FOUND)
+  async getAll() { 
+    return await this.tagService.getByCondition()
+  }
+
   @Put()
   @HttpCode(HttpStatus.OK)
   async update(@Body() dto: UpdateTagDto) { 
-    return await this.tagService.update(dto.id, dto);
+    return await this.tagService.update(dto.id, dto as any);
   }
 
   @Delete('/:id_tag')
