@@ -14,13 +14,13 @@ export class TaskCommentController {
   async getComment(@Param('task_id') task_id: number) {
     return await this.taskCommentService.getByCondition({ task_id })
   }
-
+  
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createComment(@Body() dto: CreateCommentTaskDto, @GetCurrentUserId() accountId: number) {
+  async  createComment(@Body() dto: CreateCommentTaskDto, @GetCurrentUserId() accountId: number) {
     const { content, task_id } = dto
 
-    return this.taskCommentService.create({
+    return await this.taskCommentService.create({
       task_id,
       content,
       account_id: accountId,
@@ -29,14 +29,14 @@ export class TaskCommentController {
 
   @Put()
   @HttpCode(HttpStatus.OK)
-  update(@Body() dto: UpdateCommentTaskDto, @GetCurrentUserId() accountId: number) {
+ async update(@Body() dto: UpdateCommentTaskDto, @GetCurrentUserId() accountId: number) {
     const { content, task_comment_id } = dto
-    return this.taskCommentService.update(task_comment_id, { content })
+    return await this.taskCommentService.update(task_comment_id, { content })
   }
 
   @Delete('/:task_comment_id')
   @HttpCode(HttpStatus.OK)
-  delete(@Param('task_comment_id') task_comment_id: number) {
-    return this.taskCommentService.delete(task_comment_id)
+  async delete(@Param("task_comment_id") task_comment_id: number) { 
+    return await this.taskCommentService.delete(task_comment_id)
   }
 }
