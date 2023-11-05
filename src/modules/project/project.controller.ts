@@ -27,9 +27,9 @@ export class ProjectController {
     })
   }
 
-  @Get('/:id')
+  @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getById(@Param(':id') id: number) {
+  getById(@Param('id') id: number) {
     return this.projectService.getById(id)
   }
 }
