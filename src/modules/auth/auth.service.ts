@@ -25,7 +25,7 @@ export class AuthService {
   ) {}
 
   async createAccount(dto: SignUpDto): Promise<Account> {
-    const { email, name, gender, date_of_birth, phone } = dto
+    const { email, name, gender, date_of_birth, phone, permissions } = dto
 
     let account = await this.accountService.getByEmail({
       email,
@@ -45,7 +45,7 @@ export class AuthService {
       date_of_birth,
       phone,
       color: randomColor(),
-      permissions: [MEMBER_PERMISSION],
+      permissions: permissions?.length ? permissions : [MEMBER_PERMISSION],
     })
 
     this.eventEmitter.emit('account.create', {
