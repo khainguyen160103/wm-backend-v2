@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put }
 import { TaskService } from './task.service'
 import { CreateTaskDto } from './dto'
 import { UpdateTaskDto } from './dto/update-task.dto'
+import { Task } from './entities'
 
 @Controller('task')
 export class TaskController {
@@ -22,7 +23,7 @@ export class TaskController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateTaskDto) {
-    return await this.taskService.create(dto as any)
+    return await this.taskService.create(dto as Task)
   }
 
   @Put()
@@ -31,9 +32,9 @@ export class TaskController {
     return await this.taskService.update(dto.id, dto as any)
   }
 
-  @Delete('/:id_task')
+  @Delete('/:task_id')
   @HttpCode(HttpStatus.OK)
-  async delete(@Param('id_task') id: number) { 
+  async delete(@Param('task_id') id: number) {
     return await this.taskService.delete(id)
   }
 }
