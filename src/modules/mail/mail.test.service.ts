@@ -13,7 +13,7 @@ export class MailTestService {
       to: 'quangtrn8821@gmail.com',
       // from: '"Support Team" <support@example.com>', // override default from
       subject: 'Welcome to Nice App! Confirm your Email',
-      template: './mail-password', // `.hbs` extension is appended automatically
+      template: './test', // `.hbs` extension is appended automatically
       context: {
         // ✏️ filling curly brackets with content
         name: 'quangtrn8821@gmail.com',

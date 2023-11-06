@@ -4,7 +4,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
-import { randomColor } from 'src/utils'
+import { randomColor, randomString } from 'src/utils'
 import { ChangePasswordDto, SignInDto, SignUpDto } from './dto'
 import { JwtPayload, Tokens } from './types'
 import { AccountService } from 'src/modules/account/account.service'
@@ -32,8 +32,8 @@ export class AuthService {
     })
 
     if (account) throw new ForbiddenException('Account already exist')
-    // const password = randomString(8) || DEFAULT_PASSWORD
-    const password = DEFAULT_PASSWORD
+    const password = randomString(8) || DEFAULT_PASSWORD
+    // const password = DEFAULT_PASSWORD
 
     const hash = await bcrypt.hash(password, SALT_ROUNDS)
 

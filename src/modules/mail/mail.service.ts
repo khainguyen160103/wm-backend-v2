@@ -27,6 +27,16 @@ export class MailService {
   // account events
   @OnEvent('account.create')
   onAccountCreate(params: { account: Account; password: string }) {
-    console.log('onAccountCreate: ', params)
+    const { account, password } = params
+
+    this.mailerService.sendMail({
+      to: account.email,
+      subject: 'Tài khoản Quản lý công việc',
+      template: './mail-register',
+      context: {
+        account,
+        password,
+      },
+    })
   }
 }
