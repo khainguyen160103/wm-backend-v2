@@ -30,6 +30,6 @@ export class ProjectController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   getById(@Param('id') id: number) {
-    return this.projectService.getById(id, { relations: ['sprints'] })
+    return this.projectService.getById(id, { relations: ['sprints', 'boards'] })
   }
 }
