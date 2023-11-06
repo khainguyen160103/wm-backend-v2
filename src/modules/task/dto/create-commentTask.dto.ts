@@ -7,6 +7,4 @@ export class CreateCommentTaskDto {
     @IsNotEmpty()
     task_id: number;
 
-    // @IsNotEmpty()
-    // account_id: number;
 }

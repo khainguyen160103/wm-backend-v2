@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
 import { TaskService } from './task.service'
 import { CreateTaskDto } from './dto'
 import { UpdateTaskDto } from './dto/update-task.dto'
@@ -9,25 +9,31 @@ export class TaskController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  get() {
-    return this.taskService.getByCondition()
+  async get() {
+    return await this.taskService.getByCondition()
   }
 
-  @Get(':id')
+  @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  getOne(@Param('id') taskId: number) {
-    return this.taskService.getById(taskId)
+  async getOne(@Param('id') taskId: number) {
+    return await this.taskService.getById(taskId)
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() dto: CreateTaskDto) {
-    return this.taskService.create(dto as any)
+  async create(@Body() dto: CreateTaskDto) {
+    return await this.taskService.create(dto as any)
   }
 
   @Put()
   @HttpCode(HttpStatus.OK)
-  update(@Body() dto: UpdateTaskDto) {
-    return this.taskService.update(dto.id, dto as any)
+  async update(@Body() dto: UpdateTaskDto) {
+    return await this.taskService.update(dto.id, dto as any)
+  }
+
+  @Delete('/:id_task')
+  @HttpCode(HttpStatus.OK)
+  async delete(@Param('id_task') id: number) { 
+    return await this.taskService.delete(id)
   }
 }
