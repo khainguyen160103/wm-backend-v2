@@ -11,7 +11,7 @@ import { join } from 'path'
       // transport: 'smtps://user@example.com:topsecret@smtp.example.com',
       // or
       transport: {
-        host: 'smtp.example.com',
+        host: 'smtp.gmail.com',
         secure: false,
         auth: {
           user: 'quangtrn8821@gmail.com',
@@ -19,10 +19,10 @@ import { join } from 'path'
         },
       },
       defaults: {
-        from: '"No Reply" <noreply@example.com>',
+        from: '"No Reply" <quangtrn8821@gmail.com>',
       },
       template: {
-        dir: join(__dirname, 'src/templates'),
+        dir: join(__dirname, '../../../templates'),
         adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
         options: {
           strict: true,

@@ -2,8 +2,13 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "assets": ["src/templates/**/*"], 
-    "watchAssets": true
+    "deleteOutDir": true,
+    "assets": [
+      {
+      "include": "templates/**/*",
+      "watchAssets": true
+      }
+    ]
   }
 }
 
