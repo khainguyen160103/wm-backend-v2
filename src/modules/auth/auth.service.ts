@@ -11,6 +11,7 @@ import { AccountService } from 'src/modules/account/account.service'
 import { MEMBER_PERMISSION } from 'src/constants/permission.constants'
 import { Account } from '../account/entities'
 import { EventEmitter2 } from '@nestjs/event-emitter'
+import { ForgotPassword } from './dto/forgot-password.dto'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 const DEFAULT_PASSWORD = '012345AX'
@@ -112,5 +113,25 @@ export class AuthService {
 
   testMail() {
     this.eventEmitter.emit('mail.test', {})
+  }
+
+  async forgotPassword(dto: ForgotPassword): Promise<boolean> {
+    let email = dto.email
+
+    const account = await this.accountService.getByEmail({ email })
+    if (!account) {
+      return true;
+    }
+
+    email = account.email // change updatePassword
+
+    const pw_token = await this.jwtService.sign(
+      { email },
+      {
+        secret: this.config.get<string>('PW_SECRET'),
+        expiresIn: '1d',
+      }
+    )
+    this.eventEmitter.emit('forgot.password', { account, pw_token })
   }
 }
