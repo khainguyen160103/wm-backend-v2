@@ -120,10 +120,10 @@ export class AuthService {
 
     const account = await this.accountService.getByEmail({ email })
     if (!account) {
-      return true;
+      return true
     }
 
-    email = account.email // change updatePassword
+    email = account.email
 
     const pw_token = await this.jwtService.sign(
       { email },
@@ -132,6 +132,7 @@ export class AuthService {
         expiresIn: '1d',
       }
     )
-    this.eventEmitter.emit('forgot.password', { account, pw_token })
+    this.eventEmitter.emit('account.forgot.password', { account, pw_token })
+    return true
   }
 }

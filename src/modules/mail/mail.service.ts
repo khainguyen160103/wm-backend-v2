@@ -42,7 +42,7 @@ export class MailService {
     })
   }
 
-  @OnEvent('forgot.password')
+  @OnEvent('account.forgot.password')
   onForgotPassword(params: { account: Account; pw_token: string }) {
     const { account, pw_token } = params
     if (!account) {
@@ -50,7 +50,7 @@ export class MailService {
     }
     this.mailerService.sendMail({
       to: account.email,
-      subject: 'Cập Nhật Mật Khẩu Quản Lý Công Việc', // chang vietsub
+      subject: 'Cập Nhật Mật Khẩu Quản Lý Công Việc',
       template: './mail-forgot-password',
       context: {
         account,
