@@ -4,6 +4,7 @@ import { AuthService } from './auth.service'
 import { ChangePasswordDto, SignInDto, SignUpDto } from './dto'
 import { Tokens } from './types'
 import { Account } from '../account/entities'
+import { ForgotPassword } from './dto/forgot-password.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -38,5 +39,11 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   testMail() {
     return this.authService.testMail()
+  }
+
+  @Post('/forgot-password')
+  @HttpCode(HttpStatus.OK) 
+  forgotPassword(@Body() dto: ForgotPassword) { 
+    return this.authService.forgotPassword(dto);
   }
 }
