@@ -5,10 +5,10 @@ import { AtGuard } from 'src/common/guards'
 import { TaskService } from './task.service'
 import { TaskController } from './task.controller'
 import { AccountModule } from '../account/account.module'
-import { Task, TaskComment, TaskFile, TaskHasFollower, TaskTodo } from './entities'
-import { TaskInColumn } from './entities/task_in_column.entity'
+import { Task, TaskComment, TaskFile, TaskHasFollower, TaskTodo, TaskInColumn } from './entities'
 import { TaskCommentService } from './task_comment.service'
 import { TaskCommentController } from './task_comment.controller'
+import { TaskInColumnService } from './task_in_column.service'
 
 @Module({
   imports: [
@@ -23,7 +23,8 @@ import { TaskCommentController } from './task_comment.controller'
     },
     TaskService,
     TaskCommentService,
+    TaskInColumnService,
   ],
-  exports: [TaskService, TaskCommentService],
+  exports: [TaskService, TaskCommentService, TaskInColumnService],
 })
 export class TaskModule {}

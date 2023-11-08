@@ -56,7 +56,7 @@ export class Task extends BaseEntity {
   task_has_followers?: TaskHasFollower[]
 
   @OneToMany(() => TaskInColumn, (tic) => tic.task)
-  task_in_column?: TaskInColumn[]
+  task_in_column?: TaskInColumn
 
   @OneToMany(() => TaskTodo, (todo) => todo.task, { cascade: true })
   task_todos?: TaskTodo[]

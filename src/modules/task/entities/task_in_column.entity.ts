@@ -1,9 +1,9 @@
-import { Entity, Column as Col, UpdateDateColumn, ManyToOne } from 'typeorm'
+import { Entity, Column as Col, UpdateDateColumn, ManyToOne, BaseEntity } from 'typeorm'
 import { Task } from './task.entity'
 import { Column } from 'src/modules/column/entities'
 
 @Entity('task_in_column')
-export class TaskInColumn {
+export class TaskInColumn extends BaseEntity {
   @ManyToOne(() => Column, (column) => column.task_in_column)
   column?: Column
 
@@ -16,7 +16,7 @@ export class TaskInColumn {
   @Col({ name: 'task_id', primary: true })
   task_id: number
 
-  @Col({ name: 'order?', default: 0 })
+  @Col({ name: 'order', default: 0 })
   order?: number
 
   @UpdateDateColumn()

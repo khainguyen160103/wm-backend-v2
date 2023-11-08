@@ -1,17 +1,23 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common'
 import { TaskService } from './task.service'
 import { CreateTaskDto } from './dto'
 import { UpdateTaskDto } from './dto/update-task.dto'
-import { Task } from './entities'
+import { TaskInColumnService } from './task_in_column.service'
 
 @Controller('task')
 export class TaskController {
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService, private taskInColumnService: TaskInColumnService) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async get() {
-    return await this.taskService.getByCondition()
+  async get(@Query() query: { sprint_id: number; board_id?: number }) {
+    return await this.taskService.getByCondition(
+      {
+        sprint_id: query.sprint_id,
+        ...(query.board_id ? { board_id: query.board_id } : {}),
+      },
+      { relations: ['task_in_column'] }
+    )
   }
 
   @Get('/:id')
@@ -23,7 +29,15 @@ export class TaskController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateTaskDto) {
-    return await this.taskService.create(dto as Task)
+    const task = await this.taskService.create({
+      name: dto.name,
+      sprint_id: dto.sprint_id,
+      board_id: dto.board_id,
+    })
+
+    const taskInColumn = await this.taskInColumnService.create({ column_id: 1, task_id: task.id, order: 0 })
+    task.task_in_column = taskInColumn
+    return task
   }
 
   @Put()
