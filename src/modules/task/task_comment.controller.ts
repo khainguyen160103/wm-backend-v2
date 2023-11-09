@@ -1,8 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
 import { TaskCommentService } from './task_comment.service'
-import { CreateCommentTaskDto } from './dto/create-commentTask.dto'
 import { GetCurrentUserId } from 'src/common/decorators'
-import { UpdateCommentTaskDto } from './dto/update-comment.dto'
+import { CreateCommentTaskDto, UpdateCommentTaskDto } from './dto'
 
 @Controller('task/comment')
 export class TaskCommentController {
@@ -14,10 +13,10 @@ export class TaskCommentController {
   async getComment(@Param('task_id') task_id: number) {
     return await this.taskCommentService.getByCondition({ task_id })
   }
-  
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async  createComment(@Body() dto: CreateCommentTaskDto, @GetCurrentUserId() accountId: number) {
+  async createComment(@Body() dto: CreateCommentTaskDto, @GetCurrentUserId() accountId: number) {
     const { content, task_id } = dto
 
     return await this.taskCommentService.create({
@@ -29,14 +28,14 @@ export class TaskCommentController {
 
   @Put()
   @HttpCode(HttpStatus.OK)
- async update(@Body() dto: UpdateCommentTaskDto, @GetCurrentUserId() accountId: number) {
+  async update(@Body() dto: UpdateCommentTaskDto, @GetCurrentUserId() accountId: number) {
     const { content, task_comment_id } = dto
     return await this.taskCommentService.update(task_comment_id, { content })
   }
 
   @Delete('/:task_comment_id')
   @HttpCode(HttpStatus.OK)
-  async delete(@Param("task_comment_id") task_comment_id: number) { 
+  async delete(@Param('task_comment_id') task_comment_id: number) {
     return await this.taskCommentService.delete(task_comment_id)
   }
 }

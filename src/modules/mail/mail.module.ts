@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common'
 import { MailService } from './mail.service'
 import { MailTestService } from './mail.test.service'
 import { join } from 'path'
+import { MailTaskService } from './mail.task.service'
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { join } from 'path'
       },
     }),
   ],
-  providers: [MailService, MailTestService],
-  exports: [MailService, MailTestService], // 👈 export for DI
+  providers: [MailService, MailTestService, MailTaskService],
+  exports: [MailService, MailTestService, MailTaskService], // 👈 export for DI
 })
 export class MailModule {}

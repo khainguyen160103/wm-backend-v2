@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator'
-import { TaskInColumn } from '../entities'
+import { TaskInColumn } from '../../entities'
 
 export class CreateTaskDto {
   @IsNotEmpty()

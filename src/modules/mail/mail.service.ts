@@ -2,13 +2,12 @@ import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { Account } from '../account/entities'
-import { join } from 'path'
-// import { User } from './../user/user.entity'
 
 @Injectable()
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
+  // sample
   async sendUserConfirmation(user?: string, token?: string) {
     const url = `example.com/auth/confirm?token=${token}`
     await this.mailerService.sendMail({
@@ -28,9 +27,10 @@ export class MailService {
   @OnEvent('account.create')
   onAccountCreate(params: { account: Account; password: string }) {
     const { account, password } = params
-    if (!account) {
+    if (!account || !account.email) {
       return false
     }
+
     this.mailerService.sendMail({
       to: account.email,
       subject: 'Tài khoản Quản lý công việc',
@@ -45,9 +45,10 @@ export class MailService {
   @OnEvent('account.forgot.password')
   onForgotPassword(params: { account: Account; pw_token: string }) {
     const { account, pw_token } = params
-    if (!account) {
+    if (!account || !account.email) {
       return true
     }
+
     this.mailerService.sendMail({
       to: account.email,
       subject: 'Cập Nhật Mật Khẩu Quản Lý Công Việc',

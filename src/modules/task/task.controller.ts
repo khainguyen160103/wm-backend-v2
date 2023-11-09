@@ -1,12 +1,20 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+
 import { TaskService } from './task.service'
-import { CreateTaskDto } from './dto'
-import { UpdateTaskDto } from './dto/update-task.dto'
+import { AssignTaskDto, CreateTaskDto } from './dto'
+import { UpdateTaskDto } from './dto/task/update-task.dto'
 import { TaskInColumnService } from './task_in_column.service'
+import { GetCurrentUser } from 'src/common/decorators'
+import { Account } from '../account/entities'
 
 @Controller('task')
 export class TaskController {
-  constructor(private taskService: TaskService, private taskInColumnService: TaskInColumnService) {}
+  constructor(
+    private taskService: TaskService,
+    private taskInColumnService: TaskInColumnService,
+    private eventEmitter: EventEmitter2
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -37,6 +45,18 @@ export class TaskController {
 
     const taskInColumn = await this.taskInColumnService.create({ column_id: 1, task_id: task.id, order: 0 })
     task.task_in_column = taskInColumn
+    return task
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.OK)
+  async assign(@GetCurrentUser() account: Account, @Body() dto: AssignTaskDto) {
+    const task = this.taskService.update(dto.task_id, {
+      assignee_id: dto.assignee_id,
+    })
+
+    this.eventEmitter.emit('task.assign', { account, task })
+
     return task
   }
 

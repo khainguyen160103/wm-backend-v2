@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt'
 import { ForbiddenException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 
 import { randomColor, randomString } from 'src/utils'
 import { ChangePasswordDto, SignInDto, SignUpDto } from './dto'
@@ -10,7 +11,6 @@ import { JwtPayload, Tokens } from './types'
 import { AccountService } from 'src/modules/account/account.service'
 import { MEMBER_PERMISSION } from 'src/constants/permission.constants'
 import { Account } from '../account/entities'
-import { EventEmitter2 } from '@nestjs/event-emitter'
 import { ForgotPassword } from './dto/forgot-password.dto'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
