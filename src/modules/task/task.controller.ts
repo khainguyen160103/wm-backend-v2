@@ -24,7 +24,10 @@ export class TaskController {
         sprint_id: query.sprint_id,
         ...(query.board_id ? { board_id: query.board_id } : {}),
       },
-      { relations: ['task_in_column'] }
+      {
+        relations: ['task_in_column'],
+        select: ['id', 'name', 'assignee_id', 'updated_at', 'due_date'],
+      }
     )
   }
 

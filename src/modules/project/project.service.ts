@@ -5,7 +5,7 @@ import { ProjectRepository } from './repository/project.repository'
 import { randomColor } from 'src/utils'
 
 const DefaultSprint = {
-  name: 'Giai đoạn khởi tạo',
+  name: 'Khởi tạo dự án',
   start_at: new Date(),
 }
 
