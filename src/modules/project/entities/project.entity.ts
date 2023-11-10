@@ -25,7 +25,7 @@ export class Project extends BaseEntity {
   @Column({ name: 'name', length: 50 })
   name: string
 
-  @Column({ name: 'description', type: 'longtext' })
+  @Column({ name: 'description', type: 'longtext', nullable: true })
   description?: string
 
   @Column({ name: 'avatar', nullable: true })

@@ -25,7 +25,7 @@ export class TaskController {
         ...(query.board_id ? { board_id: query.board_id } : {}),
       },
       {
-        relations: ['task_in_column', 'tags'],
+        relations: ['task_in_column', 'tags', 'assignee'],
         select: ['id', 'name', 'assignee_id', 'updated_at', 'due_date'],
       }
     )

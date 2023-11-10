@@ -22,7 +22,8 @@ export class ProjectService extends BaseService<Project> {
     try {
       const result = await this.repository.create(project)
 
-      return result.save()
+      await result.save()
+      return await this.getById(result.id, { relations: ['sprints', 'boards', 'leader'] })
     } catch (error) {
       console.error(error)
     }

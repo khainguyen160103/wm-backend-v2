@@ -24,6 +24,9 @@ export class ProjectController {
   get(@Body() params: { query?: Project; options?: any }) {
     return this.projectService.getByCondition(params.query, {
       relations: ['leader'],
+      order: {
+        created_at: 'DESC',
+      },
     })
   }
 
