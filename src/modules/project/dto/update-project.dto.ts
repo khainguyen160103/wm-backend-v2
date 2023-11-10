@@ -9,16 +9,17 @@ export class UpdateProjectDto {
   @IsString()
   name?: string
 
-  @IsString()
   description?: string
 
-  @IsString()
   avatar?: string
 
   @IsNotEmpty()
   @IsString()
   type?: ProjectType
 
-  @IsNotEmpty()
-  leader_id: number
+  leader_id?: number
+
+  sprints: any
+
+  boards: any
 }

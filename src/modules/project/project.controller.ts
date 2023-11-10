@@ -16,7 +16,7 @@ export class ProjectController {
   @Put()
   @HttpCode(HttpStatus.OK)
   update(@Body() dto: UpdateProjectDto) {
-    return this.projectService.update(dto.id, dto as any)
+    return this.projectService.update(dto.id, dto as any, { relations: ['sprints', 'boards', 'leader'] })
   }
 
   @Get()
