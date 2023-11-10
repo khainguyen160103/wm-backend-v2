@@ -11,19 +11,19 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @Post('/account')
+  @Post('account')
   @HttpCode(HttpStatus.CREATED)
   createAccount(@Body() dto: SignUpDto): Promise<Account> {
     return this.authService.createAccount(dto)
   }
 
-  @Put('/account')
+  @Put('account')
   changePassword(@Body() dto: ChangePasswordDto): Promise<boolean> {
     return this.authService.changePassword(dto)
   }
 
   @Public()
-  @Post('/login')
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   loginLocal(@Body() dto: SignInDto): Promise<Tokens> {
     return this.authService.loginLocal(dto)
@@ -41,9 +41,9 @@ export class AuthController {
     return this.authService.testMail()
   }
 
-  @Post('/forgot-password')
-  @HttpCode(HttpStatus.OK) 
-  forgotPassword(@Body() dto: ForgotPassword) { 
-    return this.authService.forgotPassword(dto);
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  forgotPassword(@Body() dto: ForgotPassword) {
+    return this.authService.forgotPassword(dto)
   }
 }
