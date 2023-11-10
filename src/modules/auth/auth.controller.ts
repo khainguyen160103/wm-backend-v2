@@ -41,7 +41,8 @@ export class AuthController {
     return this.authService.testMail()
   }
 
-  @Post('forgot-password')
+  @Public()
+  @Post('/forgot-password')
   @HttpCode(HttpStatus.OK)
   forgotPassword(@Body() dto: ForgotPassword) {
     return this.authService.forgotPassword(dto)
