@@ -25,7 +25,7 @@ export class TaskController {
         ...(query.board_id ? { board_id: query.board_id } : {}),
       },
       {
-        relations: ['task_in_column'],
+        relations: ['task_in_column', 'tags'],
         select: ['id', 'name', 'assignee_id', 'updated_at', 'due_date'],
       }
     )
@@ -34,7 +34,7 @@ export class TaskController {
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') taskId: number) {
-    return await this.taskService.getById(taskId)
+    return await this.taskService.getById(taskId, { relations: ['task_in_column', 'tags', 'assignee'] })
   }
 
   @Post()
@@ -66,7 +66,7 @@ export class TaskController {
   @Put()
   @HttpCode(HttpStatus.OK)
   async update(@Body() dto: UpdateTaskDto) {
-    return await this.taskService.update(dto.id, dto as any)
+    return await this.taskService.update(dto.id, dto as any, { relations: ['task_in_column', 'tags', 'assignee'] })
   }
 
   @Delete('/:task_id')

@@ -83,7 +83,7 @@ export class BaseService<T extends BaseEntity> {
     return { message: 'success' }
   }
 
-  async update(id: string | number, model: DeepPartial<T>): Promise<T> {
+  async update(id: string | number, model: DeepPartial<T>, options?: BaseServiceOptions): Promise<T> {
     try {
       const user = cloneDeep(model) as any
       if (user.accountId) {
@@ -94,7 +94,7 @@ export class BaseService<T extends BaseEntity> {
       const country: T = await this.getById(id)
       const updatedCountry = Object.assign(country, model)
       await this.genericRepository.save(updatedCountry)
-      return this.getById(id)
+      return this.getById(id, options)
     } catch (error) {
       throw new BadRequestException(error)
     }

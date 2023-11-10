@@ -37,7 +37,7 @@ export class Task extends BaseEntity {
   @Column({ name: 'assignee_id', nullable: true })
   assignee_id?: number
 
-  @Column({ name: 'due_date', type: 'date', nullable: true })
+  @Column({ name: 'due_date', type: 'datetime', nullable: true })
   due_date?: Date | string
 
   @Column({ name: 'sprint_id' })
