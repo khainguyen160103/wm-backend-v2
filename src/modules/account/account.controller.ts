@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Query } from '@nestjs/common'
 import { GetCurrentUserId } from 'src/common/decorators'
 import { AccountService } from './account.service'
 import { Account } from './entities'
 import { ACCOUNT_SELECT_FIELDS } from 'src/constants/user.constants'
+import { In } from 'typeorm'
 
 @Controller('account')
 export class AccountController {
@@ -17,8 +18,8 @@ export class AccountController {
   }
 
   @Get()
-  getByCondition(query?: Account): Promise<Account[]> {
-    return this.accountService.getByCondition(query)
+  getByCondition(): Promise<Account[]> {
+    return this.accountService.getByCondition({}, { relations: ['permissions'] })
   }
 
   @Post('/list')

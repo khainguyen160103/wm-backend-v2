@@ -9,6 +9,10 @@ const DefaultSprint = {
   start_at: new Date(),
 }
 
+const DefaultBoard = {
+  name: 'Bảng sơ cấp',
+}
+
 @Injectable()
 export class ProjectService extends BaseService<Project> {
   constructor(public repository: ProjectRepository) {
@@ -18,6 +22,10 @@ export class ProjectService extends BaseService<Project> {
   async create(project: Project) {
     if (!project.sprints) project.sprints = [DefaultSprint as any]
     if (!project.color) project.color = randomColor()
+
+    if (project.type === 'scrum') {
+      project.boards = [DefaultBoard as any]
+    }
 
     try {
       const result = await this.repository.create(project)
