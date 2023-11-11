@@ -133,12 +133,11 @@ export class AuthService {
         expiresIn: '5m',
       }
     )
-    console.log(pw_token)
     this.eventEmitter.emit('account.forgot.password', { account, pw_token })
     return true
   }
 
-  async ResetPasswordByEmail(dto: ResetPasswordDto): Promise<boolean> {
+  async resetPasswordByEmail(dto: ResetPasswordDto): Promise<boolean> {
     const password = dto.password
     try {
       const tokenVerify = await this.jwtService.verifyAsync(dto.token, { secret: this.config.get<string>('PW_SECRET') })
