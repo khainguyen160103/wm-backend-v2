@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt'
 
-import { ForbiddenException, Injectable } from '@nestjs/common'
+import { ForbiddenException, NotFoundException, UnauthorizedException, Injectable, HttpStatus } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { EventEmitter2 } from '@nestjs/event-emitter'
@@ -12,6 +12,7 @@ import { AccountService } from 'src/modules/account/account.service'
 import { MEMBER_PERMISSION } from 'src/constants/permission.constants'
 import { Account } from '../account/entities'
 import { ForgotPassword } from './dto/forgot-password.dto'
+import { ResetPasswordDto } from './dto/reset-password.dto'
 
 const SALT_ROUNDS = process.env.SALT_ROUNDS || 10
 const DEFAULT_PASSWORD = '012345AX'
@@ -129,10 +130,32 @@ export class AuthService {
       { email },
       {
         secret: this.config.get<string>('PW_SECRET'),
-        expiresIn: '1d',
+        expiresIn: '5m',
       }
     )
     this.eventEmitter.emit('account.forgot.password', { account, pw_token })
+    return true
+  }
+
+  async resetPasswordByEmail(dto: ResetPasswordDto): Promise<boolean> {
+    const password = dto.password
+    try {
+      const tokenVerify = await this.jwtService.verifyAsync(dto.token, { secret: this.config.get<string>('PW_SECRET') })
+      const email = tokenVerify.email
+      const account = await this.accountService.getByEmail({ email })
+      if (!account) {
+        throw new NotFoundException({
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Token đã hết hạn vui lòng gửi lại yêu cầu đồi mật khẩu',
+        })
+      }
+      this.changePassword({ email, password })
+    } catch (error) {
+      throw new UnauthorizedException({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Token đã hết hạn vui lòng gửi lại yêu cầu đồi mật khẩu',
+      })
+    }
     return true
   }
 }

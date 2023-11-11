@@ -5,6 +5,7 @@ import { ChangePasswordDto, SignInDto, SignUpDto } from './dto'
 import { Tokens } from './types'
 import { Account } from '../account/entities'
 import { ForgotPassword } from './dto/forgot-password.dto'
+import { ResetPasswordDto } from './dto/reset-password.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -46,5 +47,12 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   forgotPassword(@Body() dto: ForgotPassword) {
     return this.authService.forgotPassword(dto)
+  }
+
+  @Public()
+  @Post('/reset-password')
+  @HttpCode(HttpStatus.OK)
+  resetPasswordByEmail(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPasswordByEmail(dto)
   }
 }
