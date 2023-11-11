@@ -43,14 +43,14 @@ export class AuthController {
   }
 
   @Public()
-  @Post('/forgot-password')
+  @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   forgotPassword(@Body() dto: ForgotPassword) {
     return this.authService.forgotPassword(dto)
   }
 
   @Public()
-  @Post('/reset-password')
+  @Post('reset-password')
   @HttpCode(HttpStatus.OK)
   resetPasswordByEmail(@Body() dto: ResetPasswordDto) {
     return this.authService.resetPasswordByEmail(dto)

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Query } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Param } from '@nestjs/common'
 import { GetCurrentUserId } from 'src/common/decorators'
 import { AccountService } from './account.service'
 import { Account } from './entities'
@@ -22,7 +22,7 @@ export class AccountController {
     return this.accountService.getByCondition({}, { relations: ['permissions'] })
   }
 
-  @Post('/list')
+  @Post('list')
   @HttpCode(HttpStatus.OK)
   list(@Body() params?: { query: any; options?: any }): Promise<any> {
     return this.accountService.list(params.query, params.options)
@@ -32,5 +32,11 @@ export class AccountController {
   @HttpCode(HttpStatus.OK)
   update(@Body() dto: Account) {
     return this.accountService.update(dto.id, dto)
+  }
+
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  getById(@Param('id') id: number) {
+    return this.accountService.getById(id)
   }
 }
