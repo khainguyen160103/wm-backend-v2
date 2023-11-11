@@ -37,6 +37,6 @@ export class AccountController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   getById(@Param('id') id: number) {
-    return this.accountService.getById(id)
+    return this.accountService.getById(id, { relations: ['permissions'] })
   }
 }
