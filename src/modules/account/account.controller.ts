@@ -31,7 +31,7 @@ export class AccountController {
   @Put()
   @HttpCode(HttpStatus.OK)
   update(@Body() dto: Account) {
-    return this.accountService.update(dto.id, dto)
+    return this.accountService.update(dto.id, dto, { relations: ['permissions'] })
   }
 
   @Get(':id')
