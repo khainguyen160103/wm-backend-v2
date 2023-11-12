@@ -12,9 +12,6 @@ export class Tag extends BaseEntity {
   @Column({ name: 'color', length: 12 })
   color: string
 
-  @Column({ name: 'project_id' })
-  project_id: number
-
   @ManyToMany(() => Task, (task) => task.tags)
   tasks: Task[]
 }
