@@ -17,9 +17,6 @@ export class MailTaskService {
     if (!account) return
     if (!account.email) return
 
-    console.log('account: ', account)
-    console.log('task: ', task)
-
     await this.mailerService.sendMail({
       to: account.email,
       subject: 'Bàn giao thực hiện công việc',
