@@ -5,6 +5,7 @@ import { MailService } from './mail.service'
 import { MailTestService } from './mail.test.service'
 import { join } from 'path'
 import { MailTaskService } from './mail.task.service'
+import { AccountModule } from '../account/account.module'
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { MailTaskService } from './mail.task.service'
         },
       },
     }),
+    AccountModule,
   ],
   providers: [MailService, MailTestService, MailTaskService],
   exports: [MailService, MailTestService, MailTaskService], // 👈 export for DI

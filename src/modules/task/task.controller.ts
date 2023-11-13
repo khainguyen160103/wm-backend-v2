@@ -5,7 +5,7 @@ import { TaskService } from './task.service'
 import { AssignTaskDto, CreateTaskDto } from './dto'
 import { UpdateTaskDto } from './dto/task/update-task.dto'
 import { TaskInColumnService } from './task_in_column.service'
-import { GetCurrentUser } from 'src/common/decorators'
+import { GetCurrentUser, GetCurrentUserId } from 'src/common/decorators'
 import { Account } from '../account/entities'
 
 @Controller('task')
@@ -31,7 +31,7 @@ export class TaskController {
     )
   }
 
-  @Get('/:id')
+  @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') taskId: number) {
     return await this.taskService.getById(taskId, { relations: ['task_in_column', 'tags', 'assignee'] })
@@ -51,14 +51,18 @@ export class TaskController {
     return task
   }
 
-  @Post()
+  @Post('assign')
   @HttpCode(HttpStatus.OK)
-  async assign(@GetCurrentUser() account: Account, @Body() dto: AssignTaskDto) {
-    const task = this.taskService.update(dto.task_id, {
-      assignee_id: dto.assignee_id,
-    })
+  async assign(@GetCurrentUserId() accountId: number, @Body() dto: AssignTaskDto) {
+    const task = await this.taskService.update(
+      dto.task_id,
+      {
+        assignee_id: dto.assignee_id,
+      },
+      { relations: ['assignee'] }
+    )
 
-    this.eventEmitter.emit('task.assign', { account, task })
+    this.eventEmitter.emit('task.assign', { account_id: accountId, task })
 
     return task
   }
