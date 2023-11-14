@@ -14,7 +14,7 @@ export class AccountController {
   profile(@GetCurrentUserId() accountId: number) {
     if (!accountId) return null
 
-    return this.accountService.getById(accountId, { select: ACCOUNT_SELECT_FIELDS })
+    return this.accountService.getById(accountId, { select: ACCOUNT_SELECT_FIELDS, relations: ['permissions'] })
   }
 
   @Get()
