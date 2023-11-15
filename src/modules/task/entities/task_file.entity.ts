@@ -6,6 +6,7 @@ export class TaskFile extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
+  // url
   @Column({ name: 'name', length: 50 })
   name: string
 

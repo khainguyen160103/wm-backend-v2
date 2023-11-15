@@ -33,7 +33,9 @@ export class TaskController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') taskId: number) {
-    return await this.taskService.getById(taskId, { relations: ['task_in_column', 'tags', 'assignee'] })
+    return await this.taskService.getById(taskId, {
+      relations: ['task_in_column', 'tags', 'assignee', 'task_todos', 'task_comments', 'task_files'],
+    })
   }
 
   @Post()
