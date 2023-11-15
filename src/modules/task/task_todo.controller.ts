@@ -8,7 +8,7 @@ export class TaskTodoController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async createComment(@Body() dto: CreateTaskTodoDto) {
+  async create(@Body() dto: CreateTaskTodoDto) {
     const { content, task_id, is_checked } = dto
 
     return await this.taskTodoService.create({
