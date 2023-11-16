@@ -13,13 +13,15 @@ import { TaskTodoService } from './service/task_todo.service'
 import { TaskCommentController } from './contoller/task_comment.controller'
 import { TaskController } from './contoller/task.controller'
 import { TaskTodoController } from './contoller/task_todo.controller'
+import { TaskFileService } from './service/task_file.service'
+import { TaskFileController } from './contoller/task_file.controller'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Task, TaskComment, TaskFile, TaskTodo, TaskHasFollower, TaskInColumn]),
     AccountModule,
   ],
-  controllers: [TaskController, TaskCommentController, TaskTodoController],
+  controllers: [TaskController, TaskCommentController, TaskTodoController, TaskFileController],
   providers: [
     {
       provide: APP_GUARD,
@@ -29,7 +31,8 @@ import { TaskTodoController } from './contoller/task_todo.controller'
     TaskCommentService,
     TaskInColumnService,
     TaskTodoService,
+    TaskFileService,
   ],
-  exports: [TaskService, TaskCommentService, TaskInColumnService, TaskTodoService],
+  exports: [TaskService, TaskCommentService, TaskInColumnService, TaskTodoService, TaskFileService],
 })
 export class TaskModule {}

@@ -9,10 +9,10 @@ import { imageFileFilter, setFileName } from 'src/utils'
 export class TaskFileController {
   constructor(private taskFileService: TaskFileService) {}
 
-  @Post()
+  @Post(':task_id')
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads',
         filename: setFileName,
@@ -20,13 +20,13 @@ export class TaskFileController {
       fileFilter: imageFileFilter,
     })
   )
-  async uploadedFile(@UploadedFile() file: Express.Multer.File) {
+  async uploadedFile(@Param('task_id') task_id: number, @UploadedFile() file: Express.Multer.File) {
     const [name, type] = file.filename.split('.')
 
     const media = await this.taskFileService.create({
       name,
       type,
-      //   path: generateFilePath(),
+      task_id,
     })
 
     return media
@@ -37,6 +37,7 @@ export class TaskFileController {
   @HttpCode(HttpStatus.OK)
   async getUploadFile(@Param('name') name: string, @Res() response) {
     const file = await this.taskFileService.getOneByCondition({ name: name.trim() })
-    return response.sendFile(file.name, { root: './uploads' })
+    const media = `${file.name}.${file.type}`
+    return response.sendFile(media, { root: './uploads' })
   }
 }
