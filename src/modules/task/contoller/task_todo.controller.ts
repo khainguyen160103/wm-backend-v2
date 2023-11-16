@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
-import { TaskTodoService } from './task_todo.service'
-import { CreateTaskTodoDto, UpdateTaskTodoDto } from './dto'
+import { TaskTodoService } from '../service/task_todo.service'
+import { CreateTaskTodoDto, UpdateTaskTodoDto } from '../dto'
 
 @Controller('task/todo')
 export class TaskTodoController {

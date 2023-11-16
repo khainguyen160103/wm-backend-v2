@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { BaseService } from 'libs/services/base.service'
-import { TaskInColumnRepository } from './repository'
-import { TaskInColumn } from './entities'
-import { ChangeTaskColumnDto } from './dto'
+import { TaskInColumnRepository } from '../repository'
+import { TaskInColumn } from '../entities'
+import { ChangeTaskColumnDto } from '../dto'
 
 @Injectable()
 export class TaskInColumnService extends BaseService<TaskInColumn> {

@@ -1,11 +1,10 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Query } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 
-import { TaskService } from './task.service'
-import { AssignTaskDto, ChangeTaskColumnDto, CreateTaskDto } from './dto'
-import { UpdateTaskDto } from './dto/task/update-task.dto'
-import { TaskInColumnService } from './task_in_column.service'
 import { GetCurrentUserId } from 'src/common/decorators'
+import { TaskService } from '../service/task.service'
+import { TaskInColumnService } from '../service/task_in_column.service'
+import { AssignTaskDto, ChangeTaskColumnDto, CreateTaskDto, UpdateTaskDto } from '../dto'
 
 @Controller('task')
 export class TaskController {

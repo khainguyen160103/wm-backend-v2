@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
-import { TaskCommentService } from './task_comment.service'
+import { TaskCommentService } from '../service/task_comment.service'
 import { GetCurrentUserId } from 'src/common/decorators'
-import { CreateCommentTaskDto, UpdateCommentTaskDto } from './dto'
+import { CreateCommentTaskDto, UpdateCommentTaskDto } from '../dto'
 
 @Controller('task/comment')
 export class TaskCommentController {
