@@ -2,6 +2,7 @@ import { Controller, HttpCode, HttpStatus, Post, Body, Get, Param, Put, Delete }
 import { TagService } from './tag.service'
 import { CreateTagDto } from './dto'
 import { UpdateTagDto } from './dto/update-tag.dto'
+import { Public } from 'src/common/decorators'
 
 @Controller('tag')
 export class TagController {
@@ -31,9 +32,9 @@ export class TagController {
     return await this.tagService.update(dto.id, dto as any)
   }
 
-  @Delete('/:id_tag')
+  @Delete()
   @HttpCode(HttpStatus.OK)
-  async delete(@Param('id_tag') id: string) {
+  async delete(@Body() id: string) {
     return await this.tagService.delete(id)
   }
 }
