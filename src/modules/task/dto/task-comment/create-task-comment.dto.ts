@@ -1,10 +1,9 @@
 import { IsNotEmpty, IsString } from 'class-validator'
-export class CreateCommentTaskDto { 
-    @IsNotEmpty()
-    @IsString()
-    content: string;
+export class CreateCommentTaskDto {
+  @IsNotEmpty()
+  @IsString()
+  content: string
 
-    @IsNotEmpty()
-    task_id: number;
-
+  @IsNotEmpty()
+  task_id: number
 }

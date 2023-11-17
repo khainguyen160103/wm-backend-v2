@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put }
 import { TaskCommentService } from '../service/task_comment.service'
 import { GetCurrentUserId } from 'src/common/decorators'
 import { CreateCommentTaskDto, UpdateCommentTaskDto } from '../dto'
+import { AccountService } from 'src/modules/account/account.service'
 
 @Controller('task/comment')
 export class TaskCommentController {
@@ -11,7 +12,7 @@ export class TaskCommentController {
   @Get('/:task_id')
   @HttpCode(HttpStatus.OK)
   async getComment(@Param('task_id') task_id: number) {
-    return await this.taskCommentService.getByCondition({ task_id })
+    return await this.taskCommentService.getByCondition({ task_id }, { relations: ['account'] })
   }
 
   @Post()
@@ -30,7 +31,7 @@ export class TaskCommentController {
   @HttpCode(HttpStatus.OK)
   async update(@Body() dto: UpdateCommentTaskDto, @GetCurrentUserId() accountId: number) {
     const { content, task_comment_id } = dto
-    return await this.taskCommentService.update(task_comment_id, { content })
+    return await this.taskCommentService.update(task_comment_id, { content }, { relations: ['account'] })
   }
 
   @Delete('/:task_comment_id')
