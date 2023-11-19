@@ -15,6 +15,6 @@ export class TaskTodo extends BaseEntity {
   @Column({ name: 'is_checked', type: 'boolean', default: false })
   is_checked?: boolean
 
-  @ManyToOne(() => Task, (task) => task.task_todos)
+  @ManyToOne(() => Task, (task) => task.task_todos, { cascade: true })
   task?: Task
 }

@@ -5,12 +5,18 @@ import { GetCurrentUserId } from 'src/common/decorators'
 import { TaskService } from '../service/task.service'
 import { TaskInColumnService } from '../service/task_in_column.service'
 import { AssignTaskDto, ChangeTaskColumnDto, CreateTaskDto, UpdateTaskDto } from '../dto'
+import { TaskTodoService } from '../service/task_todo.service'
+import { TaskCommentService } from '../service/task_comment.service'
+import { TaskFileService } from '../service/task_file.service'
 
 @Controller('task')
 export class TaskController {
   constructor(
     private taskService: TaskService,
     private taskInColumnService: TaskInColumnService,
+    private taskTodoService: TaskTodoService,
+    private taskCommentService: TaskCommentService,
+    private taskFileService: TaskFileService,
     private eventEmitter: EventEmitter2
   ) {}
 
@@ -76,6 +82,40 @@ export class TaskController {
   @Delete('/:task_id')
   @HttpCode(HttpStatus.OK)
   async delete(@Param('task_id') id: number) {
+    const task = await this.getOne(id)
+    const promises = []
+
+    if (task.task_in_column) {
+      promises.push(() => {
+        this.taskInColumnService.delete(task.id)
+      })
+    }
+
+    if (task.task_todos?.length) {
+      task.task_todos.forEach((todo) => {
+        promises.push(() => {
+          this.taskTodoService.delete(todo.id)
+        })
+      })
+    }
+
+    if (task.task_comments?.length) {
+      task.task_comments.forEach((comment) => {
+        promises.push(() => {
+          this.taskCommentService.delete(comment.id)
+        })
+      })
+    }
+
+    if (task.task_files?.length) {
+      task.task_files.forEach((file) => {
+        promises.push(() => {
+          this.taskFileService.delete(file.id)
+        })
+      })
+    }
+
+    await Promise.all(promises.map((promise) => promise()))
     return await this.taskService.delete(id)
   }
 

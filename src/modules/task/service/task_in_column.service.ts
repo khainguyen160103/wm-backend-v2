@@ -24,4 +24,12 @@ export class TaskInColumnService extends BaseService<TaskInColumn> {
       { order, column_id }
     )
   }
+
+  async delete(id: string | number): Promise<{ message: any }> {
+    await this.repository.delete({
+      task_id: id,
+    } as any)
+
+    return { message: true }
+  }
 }

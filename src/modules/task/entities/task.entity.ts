@@ -58,7 +58,7 @@ export class Task extends BaseEntity {
   @OneToMany(() => TaskInColumn, (tic) => tic.task)
   task_in_column?: TaskInColumn
 
-  @OneToMany(() => TaskTodo, (todo) => todo.task, { cascade: true })
+  @OneToMany(() => TaskTodo, (todo) => todo.task, { onDelete: 'DEFAULT', onUpdate: 'DEFAULT' })
   task_todos?: TaskTodo[]
 
   @OneToMany(() => TaskComment, (comment) => comment.task, { cascade: true })
