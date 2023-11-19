@@ -17,10 +17,10 @@ export class Sprint extends BaseEntity {
   @Column({ name: 'name', length: 50 })
   name: string
 
-  @Column({ name: 'project_id' })
+  @Column({ name: 'project_id', nullable: true })
   project_id: number
 
-  @ManyToOne(() => Project, (project) => project.boards)
+  @ManyToOne(() => Project, (project) => project.sprints)
   project?: Project
 
   @Column({ name: 'start_at', type: 'datetime', nullable: true })

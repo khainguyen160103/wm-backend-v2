@@ -1,38 +1,39 @@
-import { Controller , Post , Put, Get , Delete , Body , Param, HttpStatus, HttpCode } from '@nestjs/common'
+import { Controller, Post, Put, Get, Delete, Body, Param, HttpStatus, HttpCode } from '@nestjs/common'
 import { SprintService } from './sprint.service'
 import { CreateSprintDto } from './dto/create-sprint.dto'
-import { UpdateSprintdto } from './dto/update-sprint.dto';
+import { UpdateSprintDto } from './dto/update-sprint.dto'
+
 @Controller('sprint')
 export class SprintController {
-  constructor(private sprintService: SprintService) { }
+  constructor(private sprintService: SprintService) {}
 
-  @Get('/:id') 
+  @Get('/:id')
   @HttpCode(HttpStatus.FOUND)
-  async get(@Param("id") id: number) { 
-    return await this.sprintService.getByCondition({id})
+  async get(@Param('id') id: number) {
+    return await this.sprintService.getByCondition({ id })
   }
-  
+
   @Get()
   @HttpCode(HttpStatus.FOUND)
-  async getAll() { 
+  async getAll() {
     return await this.sprintService.getByCondition()
   }
-  
-  @Post() 
+
+  @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() dto: CreateSprintDto) { 
-    return this.sprintService.create(dto as any);
+  async create(@Body() dto: CreateSprintDto) {
+    return this.sprintService.create(dto as any)
   }
+
   @Put()
   @HttpCode(HttpStatus.OK)
-  async update(@Body() dto : UpdateSprintdto) { 
-    return await this.sprintService.update(dto.id,dto)
+  async update(@Body() dto: UpdateSprintDto) {
+    return await this.sprintService.update(dto.id, dto)
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.OK)
-  async delete(@Param('id') id: number) { 
+  async delete(@Param('id') id: number) {
     return await this.sprintService.delete(id)
-  } 
-
+  }
 }
