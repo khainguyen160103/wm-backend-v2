@@ -19,15 +19,19 @@ export class ProjectController {
     return this.projectService.update(dto.id, dto as any, { relations: ['sprints', 'boards', 'leader'] })
   }
 
-  @Get()
+  @Post()
   @HttpCode(HttpStatus.OK)
   get(@Body() params: { query?: Project; options?: any }) {
-    return this.projectService.getByCondition(params.query, {
-      relations: ['leader'],
-      order: {
-        created_at: 'DESC',
-      },
-    })
+    const query = params.query
+    return this.projectService.getByCondition(
+      { leader_id: query.leader_id },
+      {
+        relations: ['leader', 'sprints'],
+        order: {
+          created_at: 'DESC',
+        },
+      }
+    )
   }
 
   @Get(':id')
