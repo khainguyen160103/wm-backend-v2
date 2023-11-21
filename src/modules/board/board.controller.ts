@@ -35,4 +35,6 @@ export class BoardController {
   async delete(@Param('board_id') id: number) {
     return await this.boardService.delete(id)
   }
+
+
 }

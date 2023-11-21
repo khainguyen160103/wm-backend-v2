@@ -30,9 +30,21 @@ export class TaskController {
       },
       {
         relations: ['task_in_column', 'tags', 'assignee'],
-        select: ['id', 'name', 'assignee_id', 'updated_at', 'due_date'],
+        select: ['task_in_column', 'id', 'name', 'assignee_id', 'updated_at', 'due_date'],
       }
     )
+  }
+
+  @Post('statsTaskColumn')
+  @HttpCode(HttpStatus.FOUND)
+  async statsTaskColumn(@Body() sprint_id: number) {
+    return await this.taskService.statsTaskColumn(sprint_id)
+  }
+
+  @Post('statsTaskTag')
+  @HttpCode(HttpStatus.FOUND)
+  async statsTaskTag(@Body() sprint_id: number) {
+    return await this.taskService.statsTaskTag(sprint_id)
   }
 
   @Get(':id')
