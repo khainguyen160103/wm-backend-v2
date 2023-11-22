@@ -10,7 +10,7 @@ export class TaskService extends BaseService<Task> {
   }
 
   async statsTaskColumn(sprint_id: number) {
-    if (!sprint_id) sprint_id = 1
+    console.log('sprint_id: ', sprint_id)
     return await this.repository.query(
       'select count(task.id) as count , column.name , column.id , column.color ' +
         'from `task` join `task_in_column` on task.id = task_in_column.task_id ' +
@@ -23,7 +23,6 @@ export class TaskService extends BaseService<Task> {
   }
 
   async statsTaskTag(sprint_id: number) {
-    if (!sprint_id) sprint_id = 1
     return await this.repository.query(
       'select count(task.id) as count , tag.name , tag.id , tag.color ' +
         'from `task` ' +
