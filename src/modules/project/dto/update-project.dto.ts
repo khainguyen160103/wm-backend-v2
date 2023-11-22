@@ -13,10 +13,6 @@ export class UpdateProjectDto {
 
   avatar?: string
 
-  @IsNotEmpty()
-  @IsString()
-  type?: ProjectType
-
   leader_id?: number
 
   sprints: any
