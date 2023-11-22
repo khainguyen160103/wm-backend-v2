@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
 import { TaskTodoService } from '../service/task_todo.service'
 import { CreateTaskTodoDto, UpdateTaskTodoDto } from '../dto'
 
@@ -29,5 +29,11 @@ export class TaskTodoController {
   @HttpCode(HttpStatus.OK)
   async delete(@Param('todo_id') todo_id: number) {
     return await this.taskTodoService.delete(todo_id)
+  }
+
+  @Get('/:task_id')
+  @HttpCode(HttpStatus.OK)
+  async getTodo(@Param('task_id') task_id: number) {
+    return await this.taskTodoService.getByCondition({ task_id })
   }
 }
