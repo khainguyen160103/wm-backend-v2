@@ -18,4 +18,8 @@ export class UpdateTaskDto {
   @IsString()
   @IsOptional()
   due_date?: string
+
+  tags?: any[]
+
+  task_has_followers?: any[]
 }

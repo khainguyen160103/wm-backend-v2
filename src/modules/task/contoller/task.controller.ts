@@ -8,6 +8,7 @@ import { AssignTaskDto, ChangeTaskColumnDto, CreateTaskDto, UpdateTaskDto } from
 import { TaskTodoService } from '../service/task_todo.service'
 import { TaskCommentService } from '../service/task_comment.service'
 import { TaskFileService } from '../service/task_file.service'
+import { TaskHasFollowerService } from '../service/task_has_follower.service'
 
 @Controller('task')
 export class TaskController {
@@ -17,6 +18,7 @@ export class TaskController {
     private taskTodoService: TaskTodoService,
     private taskCommentService: TaskCommentService,
     private taskFileService: TaskFileService,
+    private taskHasFollowerService: TaskHasFollowerService,
     private eventEmitter: EventEmitter2
   ) {}
 
@@ -51,7 +53,7 @@ export class TaskController {
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') taskId: number) {
     return await this.taskService.getById(taskId, {
-      relations: ['task_in_column', 'tags', 'assignee', 'task_todos', 'task_comments', 'task_files'],
+      relations: ['task_in_column', 'tags', 'assignee', 'task_has_followers'],
     })
   }
 
@@ -88,7 +90,12 @@ export class TaskController {
   @Put()
   @HttpCode(HttpStatus.OK)
   async update(@Body() dto: UpdateTaskDto) {
-    return await this.taskService.update(dto.id, dto as any, { relations: ['task_in_column', 'tags', 'assignee'] })
+    await this.taskHasFollowerService.updateMany(dto.task_has_followers)
+
+    delete dto.task_has_followers
+    return await this.taskService.update(dto.id, dto as any, {
+      relations: ['task_in_column', 'tags', 'assignee', 'task_has_followers'],
+    })
   }
 
   @Delete('/:task_id')
