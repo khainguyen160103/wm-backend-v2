@@ -8,15 +8,19 @@ import { AssignTaskDto, ChangeTaskColumnDto, CreateTaskDto, UpdateTaskDto } from
 import { TaskTodoService } from '../service/task_todo.service'
 import { TaskCommentService } from '../service/task_comment.service'
 import { TaskFileService } from '../service/task_file.service'
+import { TaskHasFollowerService } from '../service/task_has_follower.service'
+import { AccountService } from 'src/modules/account/account.service'
 
 @Controller('task')
 export class TaskController {
   constructor(
+    private accountService: AccountService,
     private taskService: TaskService,
     private taskInColumnService: TaskInColumnService,
     private taskTodoService: TaskTodoService,
     private taskCommentService: TaskCommentService,
     private taskFileService: TaskFileService,
+    private taskHasFollowerService: TaskHasFollowerService,
     private eventEmitter: EventEmitter2
   ) {}
 
@@ -30,17 +34,39 @@ export class TaskController {
       },
       {
         relations: ['task_in_column', 'tags', 'assignee'],
-        select: ['id', 'name', 'assignee_id', 'updated_at', 'due_date'],
+        select: ['task_in_column', 'id', 'name', 'assignee_id', 'updated_at', 'due_date'],
       }
     )
+  }
+
+  @Post('statsTaskColumn')
+  @HttpCode(HttpStatus.FOUND)
+  async statsTaskColumn(@Body() dto: { sprint_id: number }) {
+    return await this.taskService.statsTaskColumn(dto.sprint_id)
+  }
+
+  @Post('statsTaskTag')
+  @HttpCode(HttpStatus.FOUND)
+  async statsTaskTag(@Body() dto: {sprint_id: number}) {
+    return await this.taskService.statsTaskTag(dto.sprint_id)
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getOne(@Param('id') taskId: number) {
-    return await this.taskService.getById(taskId, {
-      relations: ['task_in_column', 'tags', 'assignee', 'task_todos', 'task_comments', 'task_files'],
+    const task = await this.taskService.getById(taskId, {
+      relations: ['task_in_column', 'tags', 'assignee', 'task_has_followers'],
     })
+
+    if (task.task_has_followers?.length) {
+      const accountIds = task.task_has_followers.map((thf) => thf.account_id)
+      const accounts = await this.accountService.getByIds({ ids: accountIds })
+      task.task_has_followers.forEach((thf) => {
+        thf.account = accounts.find((account) => account.id === thf.account_id)
+      })
+    }
+
+    return task
   }
 
   @Post()
@@ -76,7 +102,14 @@ export class TaskController {
   @Put()
   @HttpCode(HttpStatus.OK)
   async update(@Body() dto: UpdateTaskDto) {
-    return await this.taskService.update(dto.id, dto as any, { relations: ['task_in_column', 'tags', 'assignee'] })
+    await this.taskHasFollowerService.updateMany(dto.task_has_followers)
+
+    delete dto.task_has_followers
+    await this.taskService.update(dto.id, dto as any, {
+      relations: ['task_in_column', 'tags', 'assignee', 'task_has_followers'],
+    })
+
+    return await this.getOne(dto.id)
   }
 
   @Delete('/:task_id')

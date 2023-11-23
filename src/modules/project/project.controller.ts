@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common'
 import { ProjectService } from './project.service'
 import { CreateProjectDto, UpdateProjectDto } from './dto'
 import { Project } from './entities'
@@ -38,5 +38,11 @@ export class ProjectController {
   @HttpCode(HttpStatus.OK)
   getById(@Param('id') id: number) {
     return this.projectService.getById(id, { relations: ['sprints', 'boards'] })
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  delete(@Param('id') id: number) {
+    return this.projectService.delete(id)
   }
 }

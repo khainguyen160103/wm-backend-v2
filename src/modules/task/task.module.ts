@@ -15,6 +15,7 @@ import { TaskController } from './contoller/task.controller'
 import { TaskTodoController } from './contoller/task_todo.controller'
 import { TaskFileService } from './service/task_file.service'
 import { TaskFileController } from './contoller/task_file.controller'
+import { TaskHasFollowerService } from './service/task_has_follower.service'
 
 @Module({
   imports: [
@@ -32,7 +33,15 @@ import { TaskFileController } from './contoller/task_file.controller'
     TaskInColumnService,
     TaskTodoService,
     TaskFileService,
+    TaskHasFollowerService,
   ],
-  exports: [TaskService, TaskCommentService, TaskInColumnService, TaskTodoService, TaskFileService],
+  exports: [
+    TaskService,
+    TaskCommentService,
+    TaskInColumnService,
+    TaskTodoService,
+    TaskFileService,
+    TaskHasFollowerService,
+  ],
 })
 export class TaskModule {}

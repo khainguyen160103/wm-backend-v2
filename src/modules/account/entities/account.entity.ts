@@ -39,6 +39,9 @@ export class Account extends BaseEntity {
   @Column({ name: 'avatar', nullable: true })
   avatar?: string
 
+  @Column({ name: 'is_disabled', default: false })
+  is_disabled?: boolean
+
   @Column({ name: 'color', length: 12 })
   color: string
 

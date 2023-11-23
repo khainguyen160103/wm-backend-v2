@@ -10,9 +10,6 @@ export class Board extends BaseEntity {
   @Column({ name: 'name', length: 50 })
   name: string
 
-  @Column({ name: 'icon', length: 50 })
-  icon?: string
-
   @Column({ name: 'project_id' })
   project_id: number
 
