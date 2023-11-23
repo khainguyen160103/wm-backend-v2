@@ -34,20 +34,20 @@ export class TaskController {
       },
       {
         relations: ['task_in_column', 'tags', 'assignee'],
-        select: ['task_in_column', 'id', 'name', 'assignee_id', 'updated_at', 'due_date'],
+        select: ['task_in_column', 'id', 'name', 'assignee_id', 'updated_at', 'due_date', 'board_id'],
       }
     )
   }
 
   @Post('statsTaskColumn')
   @HttpCode(HttpStatus.FOUND)
-  async statsTaskColumn(@Body() dto: { dto: { sprint_id: number } }) {
-    return await this.taskService.statsTaskColumn(dto.dto.sprint_id)
+  async statsTaskColumn(@Body() dto: { sprint_id: number }) {
+    return await this.taskService.statsTaskColumn(dto.sprint_id)
   }
 
   @Post('statsTaskTag')
   @HttpCode(HttpStatus.FOUND)
-  async statsTaskTag(@Body() dto: {sprint_id: number }) {
+  async statsTaskTag(@Body() dto: { sprint_id: number }) {
     return await this.taskService.statsTaskTag(dto.sprint_id)
   }
 
