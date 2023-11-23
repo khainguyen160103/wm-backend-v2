@@ -6,9 +6,10 @@ import { ProjectService } from './project.service'
 import { ProjectController } from './project.controller'
 import { Project } from './entities'
 import { AccountModule } from '../account/account.module'
+import { TaskModule } from '../task/task.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Project]), AccountModule],
+  imports: [TypeOrmModule.forFeature([Project]), AccountModule, TaskModule],
   controllers: [ProjectController],
   providers: [
     {

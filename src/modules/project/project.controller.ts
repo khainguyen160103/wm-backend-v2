@@ -2,10 +2,11 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put }
 import { ProjectService } from './project.service'
 import { CreateProjectDto, UpdateProjectDto } from './dto'
 import { Project } from './entities'
+import { TaskService } from '../task/service/task.service'
 
 @Controller('project')
 export class ProjectController {
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService, private taskService: TaskService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -19,12 +20,14 @@ export class ProjectController {
     return this.projectService.update(dto.id, dto as any, { relations: ['sprints', 'boards', 'leader'] })
   }
 
-  @Post()
+  @Post('my')
   @HttpCode(HttpStatus.OK)
   get(@Body() params: { query?: Project; options?: any }) {
     const query = params.query
+    const payload: any = {}
+    if (query.leader_id) payload.leader_id = query.leader_id
     return this.projectService.getByCondition(
-      { leader_id: query.leader_id },
+      { ...query },
       {
         relations: ['leader', 'sprints'],
         order: {
