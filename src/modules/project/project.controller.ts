@@ -23,11 +23,11 @@ export class ProjectController {
   @Post('my')
   @HttpCode(HttpStatus.OK)
   get(@Body() params: { query?: Project; options?: any }) {
-    const query = params.query
+    const query: any = params.query || {}
     const payload: any = {}
     if (query.leader_id) payload.leader_id = query.leader_id
     return this.projectService.getByCondition(
-      { ...query },
+      { ...payload },
       {
         relations: ['leader', 'sprints'],
         order: {
