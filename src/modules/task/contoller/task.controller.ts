@@ -41,13 +41,13 @@ export class TaskController {
 
   @Post('statsTaskColumn')
   @HttpCode(HttpStatus.FOUND)
-  async statsTaskColumn(@Body() dto: { dto: { sprint_id: number } }) {
-    return await this.taskService.statsTaskColumn(dto.dto.sprint_id)
+  async statsTaskColumn(@Body() dto: { sprint_id: number }) {
+    return await this.taskService.statsTaskColumn(dto.sprint_id)
   }
 
   @Post('statsTaskTag')
   @HttpCode(HttpStatus.FOUND)
-  async statsTaskTag(@Body() dto: {sprint_id: number }) {
+  async statsTaskTag(@Body() dto: { sprint_id: number }) {
     return await this.taskService.statsTaskTag(dto.sprint_id)
   }
 
