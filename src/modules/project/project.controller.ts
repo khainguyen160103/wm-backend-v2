@@ -3,10 +3,17 @@ import { ProjectService } from './project.service'
 import { CreateProjectDto, UpdateProjectDto } from './dto'
 import { Project } from './entities'
 import { TaskService } from '../task/service/task.service'
+import { TaskHasFollowerService } from '../task/service/task_has_follower.service'
+import { GetCurrentUserId } from 'src/common/decorators'
+import { In } from 'typeorm'
 
 @Controller('project')
 export class ProjectController {
-  constructor(private projectService: ProjectService, private taskService: TaskService) {}
+  constructor(
+    private projectService: ProjectService,
+    private taskService: TaskService,
+    private taskHasFollowerService: TaskHasFollowerService
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -22,12 +29,17 @@ export class ProjectController {
 
   @Post('my')
   @HttpCode(HttpStatus.OK)
-  get(@Body() params: { query?: Project; options?: any }) {
+  async get(@GetCurrentUserId() accountId: number, @Body() params: { query?: any; options?: any }) {
     const query: any = params.query || {}
     const payload: any = {}
     if (query.leader_id) payload.leader_id = query.leader_id
+    let projectIds: number[] = []
+    if (!query.is_leader) {
+      projectIds = await this.projectService.getProjectIn(accountId)
+    }
+
     return this.projectService.getByCondition(
-      { ...payload },
+      { ...payload, ...(!query.is_leader ? { id: In(projectIds) } : {}) },
       {
         relations: ['leader', 'sprints'],
         order: {

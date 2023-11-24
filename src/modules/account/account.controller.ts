@@ -3,7 +3,6 @@ import { GetCurrentUserId } from 'src/common/decorators'
 import { AccountService } from './account.service'
 import { Account } from './entities'
 import { ACCOUNT_SELECT_FIELDS } from 'src/constants/user.constants'
-import { In } from 'typeorm'
 
 @Controller('account')
 export class AccountController {
@@ -30,7 +29,10 @@ export class AccountController {
 
   @Put()
   @HttpCode(HttpStatus.OK)
-  update(@Body() dto: Account) {
+  async update(@Body() dto: Account) {
+    if (dto.permissions?.length) {
+      await this.accountService.update(dto.id, { permissions: [] }) // delete permission then re update
+    }
     return this.accountService.update(dto.id, dto, { relations: ['permissions'] })
   }
 

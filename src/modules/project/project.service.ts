@@ -36,4 +36,19 @@ export class ProjectService extends BaseService<Project> {
       console.error(error)
     }
   }
+
+  async getProjectIn(account_id: number): Promise<number[]> {
+    const projects = await this.repository.query(
+      'select project.id from `project` ' +
+        'inner join sprint on sprint.project_id = project.id ' +
+        'inner join task on task.sprint_id = sprint.id ' +
+        'inner join task_has_followers on task.id = task_has_followers.task_id ' +
+        'where task_has_followers.account_id = ' +
+        account_id +
+        ' or task.assignee_id = ' +
+        account_id
+    )
+
+    return [...new Set(projects.map((project: any) => project.id))] as any
+  }
 }

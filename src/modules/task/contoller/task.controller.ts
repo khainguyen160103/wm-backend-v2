@@ -10,6 +10,7 @@ import { TaskCommentService } from '../service/task_comment.service'
 import { TaskFileService } from '../service/task_file.service'
 import { TaskHasFollowerService } from '../service/task_has_follower.service'
 import { AccountService } from 'src/modules/account/account.service'
+import { In } from 'typeorm'
 
 @Controller('task')
 export class TaskController {
@@ -26,9 +27,27 @@ export class TaskController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async get(@Query() query: { sprint_id: number; board_id?: number }) {
+  async get(
+    @GetCurrentUserId() accountId: number,
+    @Query() query: { sprint_id: number; board_id?: number; is_leader?: boolean }
+  ) {
+    let taskIds: number[] = []
+    if (!query.is_leader) {
+      const [task, taskFollow] = await Promise.all([
+        this.taskService.getByCondition({
+          sprint_id: query.sprint_id,
+          assignee_id: accountId,
+        }),
+        this.taskHasFollowerService.getByCondition({
+          account_id: accountId,
+        }),
+      ])
+      taskIds = [...new Set(task.map((task) => task.id).concat(taskFollow.map((t) => t.task_id)))]
+    }
+
     return await this.taskService.getByCondition(
       {
+        ...(taskIds.length ? { id: In(taskIds) } : {}),
         sprint_id: query.sprint_id,
         ...(query.board_id ? { board_id: query.board_id } : {}),
       },
