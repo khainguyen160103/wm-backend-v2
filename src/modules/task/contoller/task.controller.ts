@@ -34,7 +34,7 @@ export class TaskController {
       },
       {
         relations: ['task_in_column', 'tags', 'assignee'],
-        select: ['task_in_column', 'id', 'name', 'assignee_id', 'updated_at', 'due_date'],
+        select: ['task_in_column', 'id', 'name', 'assignee_id', 'updated_at', 'due_date', 'board_id'],
       }
     )
   }
