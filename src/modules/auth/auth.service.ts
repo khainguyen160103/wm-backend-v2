@@ -34,8 +34,8 @@ export class AuthService {
     })
 
     if (account) throw new ForbiddenException('Account already exist')
-    const password = randomString(8) || DEFAULT_PASSWORD
-    // const password = DEFAULT_PASSWORD
+    // const password = randomString(8) || DEFAULT_PASSWORD
+    const password = DEFAULT_PASSWORD
 
     const hash = await bcrypt.hash(password, SALT_ROUNDS)
 

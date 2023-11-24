@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { BaseService } from 'libs/services/base.service'
 import { Task } from '../entities'
 import { TaskRepository } from '../repository/task.repository'
+import { AccountService } from '../../account/account.service'
 
 @Injectable()
 export class TaskService extends BaseService<Task> {
-  constructor(public repository: TaskRepository) {
+  constructor(public repository: TaskRepository, private accountService: AccountService) {
     super(repository)
   }
 
   async statsTaskColumn(sprint_id: number) {
-    console.log('sprint_id: ', sprint_id)
     return await this.repository.query(
       'select count(task.id) as count , column.name , column.id , column.color ' +
         'from `task` join `task_in_column` on task.id = task_in_column.task_id ' +
@@ -33,5 +33,27 @@ export class TaskService extends BaseService<Task> {
         'order by tag.id asc ',
       [sprint_id]
     )
+  }
+
+  async statsTaskAccount(sprint_id: number) {
+    const dataQuery = await this.repository.query(
+      'select count(assignee_id) as count, assignee_id ' +
+        'from `task` ' +
+        'where sprint_id in(?) ' +
+        'AND assignee_id IS NOT NULL ' +
+        'group by assignee_id',
+      [sprint_id]
+    )
+
+    const dataAccount = await Promise.all(
+      dataQuery
+        .filter((item: any) => item.assignee_id !== null)
+        .map(async (item) => await this.accountService.getById(item.assignee_id))
+    )
+
+    return {
+      dataQuery,
+      dataAccount,
+    }
   }
 }
