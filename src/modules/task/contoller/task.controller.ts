@@ -119,7 +119,7 @@ export class TaskController {
       { relations: ['assignee'] }
     )
 
-    this.eventEmitter.emit('task.assign', { account_id: accountId, task })
+    this.eventEmitter.emit('task.assign', { account_id: accountId, task, project_id: dto.project_id })
 
     return task
   }

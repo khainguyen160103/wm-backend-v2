@@ -6,4 +6,6 @@ export class AssignTaskDto {
 
   @IsNotEmpty()
   assignee_id: number
+
+  project_id: number
 }

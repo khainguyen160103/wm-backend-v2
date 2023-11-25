@@ -1,7 +1,6 @@
 import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { Account } from '../account/entities'
 import { Task } from '../task/entities'
 import { AccountService } from '../account/account.service'
 
@@ -10,8 +9,8 @@ export class MailTaskService {
   constructor(private mailerService: MailerService, private accountService: AccountService) {}
 
   @OnEvent('task.assign')
-  async onAssignTask(params: { accountId: number; task: Task }) {
-    const { accountId, task } = params
+  async onAssignTask(params: { accountId: number; task: Task; project_id: number }) {
+    const { accountId, task, project_id } = params
 
     const account = await this.accountService.getById(accountId)
     if (!account) return
@@ -24,6 +23,7 @@ export class MailTaskService {
       context: {
         account,
         task,
+        url: `http://localhost:3000/project/${project_id}/task/${task.id}`,
       },
     })
   }
