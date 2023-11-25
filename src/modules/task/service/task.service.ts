@@ -56,4 +56,17 @@ export class TaskService extends BaseService<Task> {
       dataAccount,
     }
   }
+
+  async getTaskIn(account_id: number) {
+    const tasks = await this.repository.query(
+      'select * from task ' +
+        'inner join task_has_followers on task_has_followers.task_id = task.id ' +
+        'where task.assignee_id = ' +
+        account_id +
+        ' or task_has_followers.account_id = ' +
+        account_id
+    )
+
+    return [...new Set(tasks.map((task: any) => task.id))] as any
+  }
 }

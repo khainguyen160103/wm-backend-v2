@@ -33,16 +33,7 @@ export class TaskController {
   ) {
     let taskIds: number[] = []
     if (!query.is_leader) {
-      const [task, taskFollow] = await Promise.all([
-        this.taskService.getByCondition({
-          sprint_id: query.sprint_id,
-          assignee_id: accountId,
-        }),
-        this.taskHasFollowerService.getByCondition({
-          account_id: accountId,
-        }),
-      ])
-      taskIds = [...new Set(task.map((task) => task.id).concat(taskFollow.map((t) => t.task_id)))]
+      taskIds = await this.taskService.getTaskIn(accountId)
     }
 
     return await this.taskService.getByCondition(
