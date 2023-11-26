@@ -10,7 +10,7 @@ const DefaultSprint = {
 }
 
 const DefaultBoard = {
-  name: 'Bảng sơ cấp',
+  name: 'Nhóm phát triển',
 }
 
 @Injectable()
