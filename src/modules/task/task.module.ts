@@ -4,7 +4,7 @@ import { APP_GUARD } from '@nestjs/core'
 import { AtGuard } from 'src/common/guards'
 import { TaskService } from './service/task.service'
 import { AccountModule } from '../account/account.module'
-import { Task, TaskComment, TaskFile, TaskHasFollower, TaskTodo, TaskInColumn } from './entities'
+import { Task, TaskComment, TaskFile, TaskHasFollower, TaskTodo, TaskInColumn, TaskActivity } from './entities'
 
 import { TaskCommentService } from './service/task_comment.service'
 import { TaskInColumnService } from './service/task_in_column.service'
@@ -19,7 +19,7 @@ import { TaskHasFollowerService } from './service/task_has_follower.service'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Task, TaskComment, TaskFile, TaskTodo, TaskHasFollower, TaskInColumn]),
+    TypeOrmModule.forFeature([Task, TaskComment, TaskFile, TaskTodo, TaskHasFollower, TaskInColumn, TaskActivity]),
     AccountModule,
   ],
   controllers: [TaskController, TaskCommentController, TaskTodoController, TaskFileController],

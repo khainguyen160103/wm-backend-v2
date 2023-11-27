@@ -19,6 +19,7 @@ import { Tag } from 'src/modules/tag/entities'
 import { TaskTodo } from './task_todo.entity'
 import { TaskFile } from './task_file.entity'
 import { TaskComment } from './task_comment.entity'
+import { TaskActivity } from './task_activity.entity'
 
 @Entity()
 export class Task extends BaseEntity {
@@ -39,6 +40,9 @@ export class Task extends BaseEntity {
 
   @Column({ name: 'due_date', type: 'datetime', nullable: true })
   due_date?: Date | string
+
+  @Column({ name: 'related_task_id', nullable: true, comment: 'Task liên quan' })
+  related_task_id?: number
 
   @Column({ name: 'sprint_id' })
   sprint_id?: number
@@ -63,6 +67,9 @@ export class Task extends BaseEntity {
 
   @OneToMany(() => TaskComment, (comment) => comment.task, { cascade: true })
   task_comments?: TaskComment[]
+
+  @OneToMany(() => TaskActivity, (activity) => activity.task, { cascade: true })
+  task_activities?: TaskActivity[]
 
   @OneToMany(() => TaskFile, (todo) => todo.task, { cascade: true })
   task_files?: TaskFile[]
