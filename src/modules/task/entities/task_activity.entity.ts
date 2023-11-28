@@ -1,16 +1,36 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToOne } from 'typeorm'
-import { Account } from 'src/modules/account/entities'
 import { Task } from './task.entity'
 
 export enum ActivityType {
   COMMENT = 'comment',
   ASSIGN_TASK = 'assign_task',
   CHANGE_COLUMN = 'change_column',
+  EVALUATE_TASK = 'evaluate_task',
 }
 
 interface CommentContent {
   comment_by_id: number
   comment_id: number
+  project_id: number
+}
+
+interface ChangeColumn {
+  from_colum_id: number
+  to_column_id: number
+  by_id: number
+  project_id: number
+}
+
+interface AssignTask {
+  project_id: number
+  assignee_id: number // người được giao việc
+  assign_by_id: number // người giao việc
+}
+
+interface EvaluateTask {
+  project_id: number
+  assignee_id: number // người được giao việc
+  assign_by_id: number // người giao việc
 }
 
 @Entity()
@@ -19,7 +39,7 @@ export class TaskActivity extends BaseEntity {
   id?: number
 
   @Column({ name: 'content', type: 'json' })
-  content: CommentContent
+  content: CommentContent | ChangeColumn | AssignTask | EvaluateTask
 
   @Column({ name: 'task_id', nullable: true })
   task_id?: number

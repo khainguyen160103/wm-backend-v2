@@ -44,6 +44,9 @@ export class Task extends BaseEntity {
   @Column({ name: 'related_task_id', nullable: true, comment: 'Task liên quan' })
   related_task_id?: number
 
+  @Column({ name: 'is_evaluate', default: false })
+  is_evaluate?: boolean
+
   @Column({ name: 'sprint_id' })
   sprint_id?: number
 
