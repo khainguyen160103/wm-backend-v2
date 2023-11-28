@@ -170,13 +170,29 @@ export class TaskController {
 
   @Post('change-column')
   @HttpCode(HttpStatus.OK)
-  async changeColumn(@Body() dto: ChangeTaskColumnDto[]) {
+  async changeColumn(@Body() dto: ChangeTaskColumnDto[], @GetCurrentUserId() account_id: number) {
     const promises = []
     dto.forEach((item) => {
       promises.push(() => this.taskInColumnService.changeOrder(item))
     })
 
+    this.eventEmitter.emit('task.change_column', {
+      account_id,
+      task_id: dto[0].task_id,
+      project_id: dto[0].project_id,
+      column_id: dto[0].column_id,
+    })
+
     await Promise.all(promises.map((promise) => promise()))
     return true
+  }
+
+  @Post('evaluate')
+  @HttpCode(HttpStatus.OK)
+  async evaluateTask(@Body() dto: { task_id: number; project_id: number }, @GetCurrentUserId() account_id: number) {
+    const task = await this.taskService.update(dto.task_id, { is_evaluate: true })
+    this.eventEmitter.emit('task.evaluate', { account_id, task, project_id: dto.project_id })
+
+    return task
   }
 }

@@ -2,11 +2,11 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put }
 import { TaskCommentService } from '../service/task_comment.service'
 import { GetCurrentUserId } from 'src/common/decorators'
 import { CreateCommentTaskDto, UpdateCommentTaskDto } from '../dto'
-import { AccountService } from 'src/modules/account/account.service'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 
 @Controller('task/comment')
 export class TaskCommentController {
-  constructor(private taskCommentService: TaskCommentService) {}
+  constructor(private taskCommentService: TaskCommentService, private eventEmitter: EventEmitter2) {}
 
   // url: {{api}}/task/comment/:task_id
   @Get('/:task_id')
@@ -20,11 +20,15 @@ export class TaskCommentController {
   async createComment(@Body() dto: CreateCommentTaskDto, @GetCurrentUserId() accountId: number) {
     const { content, task_id } = dto
 
-    return await this.taskCommentService.create({
+    const comment = await this.taskCommentService.create({
       task_id,
       content,
       account_id: accountId,
     })
+
+    this.eventEmitter.emit('task.comment', { account_id: accountId, comment, project_id: dto.project_id })
+
+    return comment
   }
 
   @Put()

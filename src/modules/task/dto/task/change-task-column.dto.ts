@@ -4,4 +4,6 @@ export class ChangeTaskColumnDto {
   order: number
 
   column_id: number
+
+  project_id: number
 }

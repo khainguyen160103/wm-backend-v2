@@ -6,4 +6,7 @@ export class CreateCommentTaskDto {
 
   @IsNotEmpty()
   task_id: number
+
+  @IsNotEmpty()
+  project_id: number
 }
