@@ -19,13 +19,14 @@ import { TaskCommentController } from './contoller/task_comment.controller'
 import { TaskController } from './contoller/task.controller'
 import { TaskTodoController } from './contoller/task_todo.controller'
 import { TaskFileController } from './contoller/task_file.controller'
+import { TaskActivityController } from './contoller/task_activity.controller'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Task, TaskComment, TaskFile, TaskTodo, TaskHasFollower, TaskInColumn, TaskActivity]),
     AccountModule,
   ],
-  controllers: [TaskController, TaskCommentController, TaskTodoController, TaskFileController],
+  controllers: [TaskController, TaskCommentController, TaskTodoController, TaskFileController, TaskActivityController],
   providers: [
     {
       provide: APP_GUARD,
