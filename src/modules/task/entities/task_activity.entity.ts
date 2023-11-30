@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn, ManyToOne } from 'typeorm'
 import { Task } from './task.entity'
+import { Account } from 'src/modules/account/entities'
 
 export enum ActivityType {
   COMMENT = 'comment',
@@ -11,24 +12,26 @@ export enum ActivityType {
 interface CommentContent {
   comment_id: number
   project_id: number
+  comment_by: Account
 }
 
 interface ChangeColumn {
   column_id: number
   by_id: number // người chuyển trạng thái
   project_id: number
+  change_by: Account
 }
 
 interface AssignTask {
   project_id: number
   assignee_id: number // người được giao việc
-  assign_by_id: number // người giao việc
+  assign_by: Account // người giao việc
 }
 
 interface EvaluateTask {
   project_id: number
   assignee_id: number // người được giao việc
-  assign_by_id: number // người giao việc
+  assign_by: Account //người đánh giá
 }
 
 @Entity()
