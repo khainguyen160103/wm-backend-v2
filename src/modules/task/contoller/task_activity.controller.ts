@@ -12,13 +12,27 @@ export class TaskActivityController {
   @Post('find')
   @HttpCode(HttpStatus.OK)
   async getTaskActivity(@Body() dto: { task_id: number }) {
-    return await this.taskActivityService.getByCondition({ task_id: dto.task_id })
+    return await this.taskActivityService.getByCondition(
+      { task_id: dto.task_id },
+      {
+        order: {
+          updated_at: 'DESC',
+        },
+      }
+    )
   }
 
   @Get('my')
   @HttpCode(HttpStatus.OK)
   async getMyActivity(@GetCurrentUserId() accountId: number) {
     const taskIds = await this.taskService.getTaskIn(accountId)
-    return await this.taskActivityService.getByCondition({ task_id: In(taskIds) })
+    return await this.taskActivityService.getByCondition(
+      { task_id: In(taskIds) },
+      {
+        order: {
+          updated_at: 'DESC',
+        },
+      }
+    )
   }
 }
