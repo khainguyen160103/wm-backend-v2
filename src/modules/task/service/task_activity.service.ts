@@ -14,12 +14,13 @@ export class TaskActivityService extends BaseService<TaskActivity> {
   @OnEvent('task.assign')
   async onTaskAssign(params: { account_id: number; task: Task; project_id: number }) {
     const { account_id, task, project_id } = params
-    const account = await this.accountService.getById(account_id)
+    const assign_by = await this.accountService.getById(account_id)
+    const assignee = await this.accountService.getById(task.assignee_id)
     this.create({
       content: {
         project_id,
-        assignee_id: task.assignee_id,
-        assign_by: account,
+        assignee,
+        assign_by,
       },
       task_id: task.id,
       type: ActivityType.ASSIGN_TASK,

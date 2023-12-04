@@ -24,7 +24,7 @@ interface ChangeColumn {
 
 interface AssignTask {
   project_id: number
-  assignee_id: number // người được giao việc
+  assignee: Account // người được giao việc
   assign_by: Account // người giao việc
 }
 
