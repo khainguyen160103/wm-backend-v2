@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Param } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Param, Delete } from '@nestjs/common'
 import { GetCurrentUserId } from 'src/common/decorators'
 import { AccountService } from './account.service'
 import { Account } from './entities'
@@ -34,6 +34,12 @@ export class AccountController {
       await this.accountService.update(dto.id, { permissions: [] }) // delete permission then re update
     }
     return this.accountService.update(dto.id, dto, { relations: ['permissions'] })
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  async delete(@Param('id') id: number) {
+    return this.accountService.delete(id)
   }
 
   @Get(':id')
