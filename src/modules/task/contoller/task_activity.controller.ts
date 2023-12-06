@@ -13,7 +13,7 @@ export class TaskActivityController {
   @HttpCode(HttpStatus.OK)
   async getTaskActivity(@Body() dto: { task_id: number }) {
     return await this.taskActivityService.getByCondition(
-      { task_id: dto.task_id },
+      { task_id: dto.task_id, type: In(['assign_task', 'change_column', 'evaluate_task']) },
       {
         order: {
           updated_at: 'DESC',
@@ -27,7 +27,7 @@ export class TaskActivityController {
   async getMyActivity(@GetCurrentUserId() accountId: number) {
     const taskIds = await this.taskService.getTaskIn(accountId)
     return await this.taskActivityService.getByCondition(
-      { task_id: In(taskIds) },
+      { task_id: In(taskIds), type: In(['assign_task', 'change_column', 'comment']) },
       {
         order: {
           updated_at: 'DESC',
