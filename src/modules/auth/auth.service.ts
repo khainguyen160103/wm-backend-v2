@@ -81,6 +81,7 @@ export class AuthService {
     })
 
     if (!account) throw new ForbiddenException('Access Denied')
+    if (account.is_disabled) throw new ForbiddenException('Access Denied')
 
     const passwordMatches = await bcrypt.compare(dto.password, account.password)
 

@@ -18,13 +18,13 @@ export class AccountController {
 
   @Get()
   getByCondition(): Promise<Account[]> {
-    return this.accountService.getByCondition({}, { relations: ['permissions'] })
+    return this.accountService.getByCondition({ is_disabled: false }, { relations: ['permissions'] })
   }
 
   @Post('list')
   @HttpCode(HttpStatus.OK)
   list(@Body() params?: { query: any; options?: any }): Promise<any> {
-    return this.accountService.list(params.query, params.options)
+    return this.accountService.list({ ...params.query, query: { is_disabled: false } }, params.options)
   }
 
   @Put()
@@ -39,7 +39,7 @@ export class AccountController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   async delete(@Param('id') id: number) {
-    return this.accountService.delete(id)
+    return this.accountService.update(id, { is_disabled: true })
   }
 
   @Get(':id')
